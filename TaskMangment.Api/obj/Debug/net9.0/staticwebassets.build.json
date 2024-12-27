@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "tbU3NNHKSm/ecgeO6IsSRZvhxQEmVQa0wEc+z1iJsiE=",
+  "Source": "TaskMangment.Api",
+  "BasePath": "_content/TaskMangment.Api",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}

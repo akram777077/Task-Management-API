@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+using TaskMangment.Api;
 using TaskMangment.Api.Data;
+using TaskMangment.Api.Services.STask;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +15,9 @@ builder.Services.AddDbContext<ToDoListDbContext>(options =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
+builder.Services.AddScoped<ITaskService, TaskService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

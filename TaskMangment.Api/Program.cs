@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using TaskMangment.Api;
-using TaskMangment.Api.Data;
-using TaskMangment.Api.Services.STask;
+using TaskMangment.Buisness.Services.STask;
+using TaskMangment.Data;
+using TaskMangment.Data.Repositories.RTask;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +17,7 @@ builder.Services.AddDbContext<ToDoListDbContext>(options =>
 });
 
 builder.Services.AddScoped<ITaskService, TaskService>();
+builder.Services.AddScoped<ITaskRepository, TaskRepository>();
 
 var app = builder.Build();
 

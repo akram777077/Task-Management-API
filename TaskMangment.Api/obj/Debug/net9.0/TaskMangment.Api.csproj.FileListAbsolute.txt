@@ -123,3 +123,9 @@
 /home/mrx07/Documents/Task-Management-API/TaskMangment.Api/obj/Debug/net9.0/TaskMangment.Api.pdb
 /home/mrx07/Documents/Task-Management-API/TaskMangment.Api/obj/Debug/net9.0/TaskMangment.Api.genruntimeconfig.cache
 /home/mrx07/Documents/Task-Management-API/TaskMangment.Api/obj/Debug/net9.0/ref/TaskMangment.Api.dll
+/home/mrx07/Documents/Task-Management-API/TaskMangment.Api/bin/Debug/net9.0/AutoMapper.dll
+/home/mrx07/Documents/Task-Management-API/TaskMangment.Api/bin/Debug/net9.0/AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+/home/mrx07/Documents/Task-Management-API/TaskMangment.Api/bin/Debug/net9.0/TaskMangment.Buisness.dll
+/home/mrx07/Documents/Task-Management-API/TaskMangment.Api/bin/Debug/net9.0/TaskMangment.Data.dll
+/home/mrx07/Documents/Task-Management-API/TaskMangment.Api/bin/Debug/net9.0/TaskMangment.Buisness.pdb
+/home/mrx07/Documents/Task-Management-API/TaskMangment.Api/bin/Debug/net9.0/TaskMangment.Data.pdb

@@ -1,0 +1,16 @@
+/home/mrx07/Documents/Task-Management-API/TaskMangment.Buisness/bin/Debug/net9.0/TaskMangment.Buisness.deps.json
+/home/mrx07/Documents/Task-Management-API/TaskMangment.Buisness/bin/Debug/net9.0/TaskMangment.Buisness.dll
+/home/mrx07/Documents/Task-Management-API/TaskMangment.Buisness/bin/Debug/net9.0/TaskMangment.Buisness.pdb
+/home/mrx07/Documents/Task-Management-API/TaskMangment.Buisness/bin/Debug/net9.0/TaskMangment.Data.dll
+/home/mrx07/Documents/Task-Management-API/TaskMangment.Buisness/bin/Debug/net9.0/TaskMangment.Data.pdb
+/home/mrx07/Documents/Task-Management-API/TaskMangment.Buisness/obj/Debug/net9.0/TaskMangment.Buisness.csproj.AssemblyReference.cache
+/home/mrx07/Documents/Task-Management-API/TaskMangment.Buisness/obj/Debug/net9.0/TaskMangment.Buisness.GeneratedMSBuildEditorConfig.editorconfig
+/home/mrx07/Documents/Task-Management-API/TaskMangment.Buisness/obj/Debug/net9.0/TaskMangment.Buisness.AssemblyInfoInputs.cache
+/home/mrx07/Documents/Task-Management-API/TaskMangment.Buisness/obj/Debug/net9.0/TaskMangment.Buisness.AssemblyInfo.cs
+/home/mrx07/Documents/Task-Management-API/TaskMangment.Buisness/obj/Debug/net9.0/TaskMangment.Buisness.csproj.CoreCompileInputs.cache
+/home/mrx07/Documents/Task-Management-API/TaskMangment.Buisness/obj/Debug/net9.0/TaskMangment.Buisness.sourcelink.json
+/home/mrx07/Documents/Task-Management-API/TaskMangment.Buisness/obj/Debug/net9.0/TaskMang.11E942A4.Up2Date
+/home/mrx07/Documents/Task-Management-API/TaskMangment.Buisness/obj/Debug/net9.0/TaskMangment.Buisness.dll
+/home/mrx07/Documents/Task-Management-API/TaskMangment.Buisness/obj/Debug/net9.0/refint/TaskMangment.Buisness.dll
+/home/mrx07/Documents/Task-Management-API/TaskMangment.Buisness/obj/Debug/net9.0/TaskMangment.Buisness.pdb
+/home/mrx07/Documents/Task-Management-API/TaskMangment.Buisness/obj/Debug/net9.0/ref/TaskMangment.Buisness.dll

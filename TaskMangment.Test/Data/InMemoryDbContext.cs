@@ -1,6 +1,6 @@
 using System;
 using Microsoft.EntityFrameworkCore;
-using TaskMangment.Api.Data;
+using TaskMangment.Data;
 
 namespace TaskMangment.Test.Data;
 

@@ -28,5 +28,15 @@ namespace TaskMangment.Api.Controllers
             var responseList = _mapper.Map<List<ResponseDto>>(tasksList);
             return Ok(responseList);
         }
+        [HttpGet]
+        [Route("{id:int}")]
+        public async Task<ActionResult<ResponseDto>> getById(int id)
+        {
+            var task = await _taskService.GetByIdAsync(id);
+            if(task is null)
+                return NotFound();
+            var response = _mapper.Map<ResponseDto>(task);
+            return Ok(response);
+        }
     }
 }

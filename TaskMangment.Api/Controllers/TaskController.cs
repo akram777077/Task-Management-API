@@ -48,5 +48,16 @@ namespace TaskMangment.Api.Controllers
             var response = _mapper.Map<ResponseDto>(task);
             return CreatedAtAction(nameof(getById), new { id = task.Id }, response);
         }
+        [HttpPut]
+        [Route("{id:int}")]
+        public async Task<ActionResult<ResponseDto>> update(int id, UpdateTaskRequest updatedTaskDto)
+        {
+            var taskModel = _mapper.Map<TaskModel>(updatedTaskDto,ops => ops.Items["Id"] = id);
+            var result = await _taskService.UpdateAsync(taskModel);
+            if (!result)
+                return NotFound();
+            var response = _mapper.Map<ResponseDto>(taskModel);
+            return NoContent();
+        }
     }
 }

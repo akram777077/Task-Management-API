@@ -20,5 +20,15 @@ public class TaskProfile : Profile
                     false
                 )
             );
+        CreateMap<UpdateTaskRequest,TaskModel>()
+            .ConstructUsing((x, context) => 
+                new TaskModel(
+                    context.Items["Id"] as int? ?? 0,
+                    x.Title, 
+                    x.Description, 
+                    x.DueDate,
+                    x.IsCompleted
+                )
+            );
     }
 }

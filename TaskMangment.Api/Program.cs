@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using TaskMangment.Api.Mapping;
 using TaskMangment.Buisness.Services.STask;
 using TaskMangment.Data;
 using TaskMangment.Data.Repositories.RTask;
@@ -18,7 +19,7 @@ builder.Services.AddDbContext<ToDoListDbContext>(options =>
 
 builder.Services.AddScoped<ITaskService, TaskService>();
 builder.Services.AddScoped<ITaskRepository, TaskRepository>();
-
+builder.Services.AddAutoMapper(typeof(TaskProfile));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

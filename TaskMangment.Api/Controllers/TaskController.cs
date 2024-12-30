@@ -59,5 +59,12 @@ namespace TaskMangment.Api.Controllers
             var response = _mapper.Map<ResponseDto>(taskModel);
             return NoContent();
         }
+        [HttpDelete]
+        [Route("{id:int}")]
+        public async Task<ActionResult> delete(int id)
+        {
+            await _taskService.DeleteAsync(id);
+            return NoContent();
+        }
     }
 }

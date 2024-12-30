@@ -2,6 +2,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TaskMangment.Api.DTOs;
+using TaskMangment.Buisness.Models;
 using TaskMangment.Buisness.Services.STask;
 
 namespace TaskMangment.Api.Controllers
@@ -37,6 +38,15 @@ namespace TaskMangment.Api.Controllers
                 return NotFound();
             var response = _mapper.Map<ResponseDto>(task);
             return Ok(response);
+        }
+        [HttpPost]
+        [Route("")]
+        public async Task<ActionResult<ResponseDto>> create(CreateTaskRequest newTaskDto)
+        {
+            var taskModel = _mapper.Map<TaskModel>(newTaskDto);
+            var task = await _taskService.CreateAsync(taskModel);
+            var response = _mapper.Map<ResponseDto>(task);
+            return CreatedAtAction(nameof(getById), new { id = task.Id }, response);
         }
     }
 }

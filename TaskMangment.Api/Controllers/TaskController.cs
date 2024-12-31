@@ -2,12 +2,13 @@ using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TaskMangment.Api.DTOs;
+using TaskMangment.Api.Routes;
 using TaskMangment.Buisness.Models;
 using TaskMangment.Buisness.Services.STask;
 
 namespace TaskMangment.Api.Controllers
 {
-    [Route("api/Task")]
+    [Route(TaskRoute.Base)]
     [ApiController]
     public class TaskController : ControllerBase
     {
@@ -20,7 +21,7 @@ namespace TaskMangment.Api.Controllers
             this._mapper = mapper;
         }
         [HttpGet]
-        [Route("/")]
+        [Route(TaskRoute.GetAll)]
         public async Task<ActionResult<IEnumerable<ResponseDto>>>getAll()
         {
             var tasksList = await _taskService.GetAllAsync();
@@ -30,7 +31,7 @@ namespace TaskMangment.Api.Controllers
             return Ok(responseList);
         }
         [HttpGet]
-        [Route("{id:int}")]
+        [Route(TaskRoute.Get)]
         public async Task<ActionResult<ResponseDto>> getById(int id)
         {
             var task = await _taskService.GetByIdAsync(id);
@@ -40,7 +41,7 @@ namespace TaskMangment.Api.Controllers
             return Ok(response);
         }
         [HttpPost]
-        [Route("")]
+        [Route(TaskRoute.Create)]
         public async Task<ActionResult<ResponseDto>> create(CreateTaskRequest newTaskDto)
         {
             var taskModel = _mapper.Map<TaskModel>(newTaskDto);
@@ -49,7 +50,7 @@ namespace TaskMangment.Api.Controllers
             return CreatedAtAction(nameof(getById), new { id = task.Id }, response);
         }
         [HttpPut]
-        [Route("{id:int}")]
+        [Route(TaskRoute.Update)]
         public async Task<ActionResult<ResponseDto>> update(int id, UpdateTaskRequest updatedTaskDto)
         {
             var taskModel = _mapper.Map<TaskModel>(updatedTaskDto,ops => ops.Items["Id"] = id);
@@ -60,7 +61,7 @@ namespace TaskMangment.Api.Controllers
             return NoContent();
         }
         [HttpDelete]
-        [Route("{id:int}")]
+        [Route(TaskRoute.Delete)]
         public async Task<ActionResult> delete(int id)
         {
             await _taskService.DeleteAsync(id);

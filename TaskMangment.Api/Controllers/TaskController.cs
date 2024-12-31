@@ -2,6 +2,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TaskMangment.Api.DTOs;
+using TaskMangment.Api.Middlewares.Attributes;
 using TaskMangment.Api.Routes;
 using TaskMangment.Buisness.Models;
 using TaskMangment.Buisness.Services.STask;
@@ -22,6 +23,7 @@ namespace TaskMangment.Api.Controllers
         }
         [HttpGet]
         [Route(TaskRoute.GetAll)]
+        [SkipValidateId]
         public async Task<ActionResult<IEnumerable<ResponseDto>>>getAll()
         {
             var tasksList = await _taskService.GetAllAsync();
@@ -42,6 +44,7 @@ namespace TaskMangment.Api.Controllers
         }
         [HttpPost]
         [Route(TaskRoute.Create)]
+        [SkipValidateId]
         public async Task<ActionResult<ResponseDto>> create(CreateTaskRequest newTaskDto)
         {
             var taskModel = _mapper.Map<TaskModel>(newTaskDto);

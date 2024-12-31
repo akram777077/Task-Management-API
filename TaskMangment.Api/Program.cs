@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using TaskMangment.Api.Mapping;
+using TaskMangment.Api.Middlewares;
 using TaskMangment.Buisness.Services.STask;
 using TaskMangment.Data;
 using TaskMangment.Data.Repositories.RTask;
@@ -21,7 +22,7 @@ builder.Services.AddScoped<ITaskService, TaskService>();
 builder.Services.AddScoped<ITaskRepository, TaskRepository>();
 builder.Services.AddAutoMapper(typeof(TaskProfile));
 var app = builder.Build();
-
+app.UseMiddleware<ValidateIdMiddleware>();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

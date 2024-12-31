@@ -1,4 +1,5 @@
 using System;
+using TaskMangment.Api.DTOs;
 using TaskMangment.Api.Middlewares.Attributes;
 
 namespace TaskMangment.Api.Middlewares;
@@ -22,12 +23,13 @@ public class ValidateIdMiddleware
                 int.TryParse(idValue?.ToString(), out var id) && 
                 id <= 0)
             {
-                var errorResponse = new
-                {
-                    StatusCode = StatusCodes.Status400BadRequest,
-                    Message = "The 'id' parameter must be greater than 0.",
-                    Timestamp = DateTime.UtcNow
-                };
+                var errorResponse = new ErrorResponseDto
+                (
+                    StatusCodes.Status400BadRequest,
+                    "Invalid ID",
+                    "The ID provided in the request is less than or equal to zero, which is not valid for this API.",
+                    DateTime.UtcNow
+                );
 
                 context.Response.StatusCode = StatusCodes.Status400BadRequest;
                 context.Response.ContentType = "application/json";

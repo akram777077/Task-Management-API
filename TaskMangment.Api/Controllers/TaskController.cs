@@ -24,6 +24,8 @@ namespace TaskMangment.Api.Controllers
         [HttpGet]
         [Route(TaskRoute.GetAll)]
         [SkipValidateId]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status200OK,Type = typeof(IEnumerable<ResponseDto>))]
         public async Task<ActionResult<IEnumerable<ResponseDto>>>getAll()
         {
             var tasksList = await _taskService.GetAllAsync();
@@ -34,6 +36,9 @@ namespace TaskMangment.Api.Controllers
         }
         [HttpGet]
         [Route(TaskRoute.Get)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK,Type = typeof(ResponseDto))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest,Type = typeof(ErrorResponseDto))]
         public async Task<ActionResult<ResponseDto>> getById(int id)
         {
             var task = await _taskService.GetByIdAsync(id);
@@ -45,6 +50,7 @@ namespace TaskMangment.Api.Controllers
         [HttpPost]
         [Route(TaskRoute.Create)]
         [SkipValidateId]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<ActionResult<ResponseDto>> create(CreateTaskRequest newTaskDto)
         {
             var taskModel = _mapper.Map<TaskModel>(newTaskDto);
@@ -54,6 +60,9 @@ namespace TaskMangment.Api.Controllers
         }
         [HttpPut]
         [Route(TaskRoute.Update)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest,Type = typeof(ErrorResponseDto))]
         public async Task<ActionResult<ResponseDto>> update(int id, UpdateTaskRequest updatedTaskDto)
         {
             var taskModel = _mapper.Map<TaskModel>(updatedTaskDto,ops => ops.Items["Id"] = id);
@@ -65,6 +74,8 @@ namespace TaskMangment.Api.Controllers
         }
         [HttpDelete]
         [Route(TaskRoute.Delete)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest,Type = typeof(ErrorResponseDto))]
         public async Task<ActionResult> delete(int id)
         {
             await _taskService.DeleteAsync(id);

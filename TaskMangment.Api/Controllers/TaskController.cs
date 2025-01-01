@@ -26,7 +26,7 @@ namespace TaskMangment.Api.Controllers
         [SkipValidateId]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status200OK,Type = typeof(IEnumerable<ResponseDto>))]
-        public async Task<ActionResult<IEnumerable<ResponseDto>>>getAll()
+        public async Task<ActionResult<IEnumerable<ResponseDto>>>GetAll()
         {
             var tasksList = await _taskService.GetAllAsync();
             if(tasksList.Count is 0)
@@ -39,7 +39,7 @@ namespace TaskMangment.Api.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK,Type = typeof(ResponseDto))]
         [ProducesResponseType(StatusCodes.Status400BadRequest,Type = typeof(ErrorResponseDto))]
-        public async Task<ActionResult<ResponseDto>> getById(int id)
+        public async Task<ActionResult<ResponseDto>> GetById(int id)
         {
             var task = await _taskService.GetByIdAsync(id);
             if(task is null)
@@ -51,19 +51,19 @@ namespace TaskMangment.Api.Controllers
         [Route(TaskRoute.Create)]
         [SkipValidateId]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public async Task<ActionResult<ResponseDto>> create(CreateTaskRequest newTaskDto)
+        public async Task<ActionResult<ResponseDto>> Create(CreateTaskRequest newTaskDto)
         {
             var taskModel = _mapper.Map<TaskModel>(newTaskDto);
             var task = await _taskService.CreateAsync(taskModel);
             var response = _mapper.Map<ResponseDto>(task);
-            return CreatedAtAction(nameof(getById), new { id = task.Id }, response);
+            return CreatedAtAction(nameof(GetById), new { id = task.Id }, response);
         }
         [HttpPut]
         [Route(TaskRoute.Update)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest,Type = typeof(ErrorResponseDto))]
-        public async Task<ActionResult<ResponseDto>> update(int id, UpdateTaskRequest updatedTaskDto)
+        public async Task<ActionResult<ResponseDto>> Update(int id, UpdateTaskRequest updatedTaskDto)
         {
             var taskModel = _mapper.Map<TaskModel>(updatedTaskDto,ops => ops.Items["Id"] = id);
             var result = await _taskService.UpdateAsync(taskModel);
@@ -76,7 +76,7 @@ namespace TaskMangment.Api.Controllers
         [Route(TaskRoute.Delete)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest,Type = typeof(ErrorResponseDto))]
-        public async Task<ActionResult> delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
             await _taskService.DeleteAsync(id);
             return NoContent();

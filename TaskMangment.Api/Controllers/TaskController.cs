@@ -81,5 +81,17 @@ namespace TaskMangment.Api.Controllers
             await _taskService.DeleteAsync(id);
             return NoContent();
         }
+        [HttpPatch]
+        [Route(TaskRoute.Complete)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest,Type = typeof(ErrorResponseDto))]
+        public async Task<ActionResult> Complete(int id)
+        {
+            var result = await _taskService.CompleteAsync(id);
+            if(!result)
+                return NotFound();
+            return NoContent();
+        }
     }
 }

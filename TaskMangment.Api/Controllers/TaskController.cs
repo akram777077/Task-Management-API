@@ -93,5 +93,17 @@ namespace TaskMangment.Api.Controllers
                 return NotFound();
             return NoContent();
         }
+        [HttpPatch]
+        [Route(TaskRoute.Reopen)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest,Type = typeof(ErrorResponseDto))]
+        public async Task<ActionResult> Reopen(int id)
+        {
+            var result = await _taskService.ReopenAsync(id);
+            if(!result)
+                return NotFound();
+            return NoContent();
+        }
     }
 }

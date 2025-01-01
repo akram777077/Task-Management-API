@@ -75,10 +75,13 @@ namespace TaskMangment.Api.Controllers
         [HttpDelete]
         [Route(TaskRoute.Delete)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest,Type = typeof(ErrorResponseDto))]
         public async Task<ActionResult> Delete(int id)
         {
-            await _taskService.DeleteAsync(id);
+            var result = await _taskService.DeleteAsync(id);
+            if (!result)
+                return NotFound();
             return NoContent();
         }
         [HttpPatch]

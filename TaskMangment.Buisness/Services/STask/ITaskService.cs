@@ -9,7 +9,7 @@ public interface ITaskService
     Task<TaskModel?> GetByIdAsync(int id);
     Task<TaskModel> CreateAsync(TaskModel newTask);
     Task<bool> UpdateAsync(TaskModel updatedTask);
-    Task DeleteAsync(int id);
+    Task<bool> DeleteAsync(int id);
     Task<bool> CompleteAsync(int id);
     Task<bool> ReopenAsync(int id);
 }

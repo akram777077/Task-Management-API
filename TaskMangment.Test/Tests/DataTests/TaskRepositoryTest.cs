@@ -167,9 +167,21 @@ public class TaskRepositoryTest
         var db = InMemoryDbContext.CreateInMemoryDbContext();
         await db.AddTestDataAsync();
         var service = new TaskRepository(db);
-        await service.DeleteTaskAsync(1);
+        var resultDelete=await service.DeleteTaskAsync(1);
+        Assert.True(resultDelete);
         var result = await service.GetTaskByIdAsync(1);
         Assert.Null(result);
+        db.Dispose();
+    }
+    //? DeleteTaskAsync Tests
+    [Fact]
+    public async Task DeleteTaskAsync_WrongId()
+    {
+        var db = InMemoryDbContext.CreateInMemoryDbContext();
+        await db.AddTestDataAsync();
+        var service = new TaskRepository(db);
+        var resultDelete=await service.DeleteTaskAsync(-1);
+        Assert.False(resultDelete);
         db.Dispose();
     }
     

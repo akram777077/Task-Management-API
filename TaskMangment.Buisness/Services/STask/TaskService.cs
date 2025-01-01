@@ -30,11 +30,11 @@ public class TaskService : ITaskService
         return result.ToModel();
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task<bool> DeleteAsync(int id)
     {
         if(id <= 0 )
             throw new ArgumentException("Id must be greater than 0");
-        await _repository.DeleteTaskAsync(id);
+        return await _repository.DeleteTaskAsync(id);
     }
 
     public async Task<List<TaskModel>> GetAllAsync()

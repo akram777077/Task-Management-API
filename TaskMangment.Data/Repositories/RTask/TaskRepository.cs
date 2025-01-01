@@ -29,11 +29,14 @@ public class TaskRepository : ITaskRepository
         return newTask;
     }
 
-    public async Task DeleteTaskAsync(int id)
+    public async Task<bool> DeleteTaskAsync(int id)
     {
-        await _context.ToDoItems
-        .Where(x => x.Id == id)
-        .ExecuteDeleteAsync();
+        var target = await _context.ToDoItems.FirstOrDefaultAsync(x => x.Id == id);
+        if (target is null)
+            return false;
+        _context.ToDoItems.Remove(target);
+        await _context.SaveChangesAsync();
+        return true;
     }
 
     public async Task<List<TaskEntity>> GetAllTasksAsync()

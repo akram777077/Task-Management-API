@@ -8,7 +8,7 @@ public interface ITaskRepository
     Task<TaskEntity?> GetTaskByIdAsync(int id);
     Task<TaskEntity> CreateTaskAsync(TaskEntity newTask);
     Task<bool> UpdateTaskAsync(TaskEntity updatedTask);
-    Task DeleteTaskAsync(int id);
+    Task<bool> DeleteTaskAsync(int id);
     Task<bool> CompleteTaskAsync(int id);
     Task<bool> ReopenTaskAsync(int id);
 }

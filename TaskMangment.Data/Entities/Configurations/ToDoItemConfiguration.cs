@@ -26,6 +26,11 @@ public class ToDoItemConfiguration : IEntityTypeConfiguration<TaskEntity>
 
         builder.Property(t => t.IsCompleted)
             .HasDefaultValue(false);
+
+        builder.HasOne(u => u.User)
+            .WithMany(t => t.Tasks)
+            .HasForeignKey(t => t.Username)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }
 

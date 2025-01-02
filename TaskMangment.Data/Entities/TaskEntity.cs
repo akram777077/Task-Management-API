@@ -9,4 +9,6 @@ public class TaskEntity
     public string? Description { get; set; }
     public DateTime DueDate { get; set; }
     public bool IsCompleted { get; set; }
+    public string Username { get; set; } = null!;
+    public UserEntity User { get; set; } = null!;
 }

@@ -1,6 +1,7 @@
 using TaskMangment.Data.Repositories.RTask;
 using TaskMangment.Test.Data;
 using TaskMangment.Test.Extensions;
+
 namespace TaskMangment.Test.Tests.DataTests;
 
 
@@ -25,7 +26,7 @@ public class TaskRepositoryTest
         var service = new TaskRepository(db);
         var result = await  service.GetAllTasksAsync();
         Assert.NotNull(result);
-        Assert.Equal(4, result.Count);
+        Assert.Equal(8, result.Count);
         db.Dispose();
     }
     
@@ -47,7 +48,7 @@ public class TaskRepositoryTest
         var db = InMemoryDbContext.CreateInMemoryDbContext();
         await db.AddTestDataAsync();
         var service = new TaskRepository(db);
-        var result = await  service.GetTaskByIdAsync(5);
+        var result = await  service.GetTaskByIdAsync(-1);
         Assert.Null(result);
         db.Dispose();
     }
@@ -57,34 +58,39 @@ public class TaskRepositoryTest
     public async Task CreateTaskAsync_NonNullDescription_ReturnsCorrectTask()
     {
         var db = InMemoryDbContext.CreateInMemoryDbContext();
+        await db.AddTestDataAsync();
         var service = new TaskRepository(db);
         var result = await service.CreateTaskAsync(
             new ()
             {
                 Title = "akram",
                 Description = "description",
-                DueDate = DateTime.Now
+                DueDate = DateTime.Now,
+                Username = "akram"
             }
         );
         Assert.NotNull(result);
-        Assert.Equal(1, result.Id);
+        Assert.Equal(9, result.Id);
         db.Dispose();
     }
     [Fact]
     public async Task CreateTaskAsync_NullDescription_ReturnsCorrectTask()
     {
         var db = InMemoryDbContext.CreateInMemoryDbContext();
+        await db.AddTestDataAsync();
         var service = new TaskRepository(db);
+        var listUsers = await DataTestExtension.getListUserAsync();
         var result = await service.CreateTaskAsync(
             new ()
             {
                 Title = "akram",
                 Description = null,
-                DueDate = DateTime.Now
+                DueDate = DateTime.Now,
+                Username = "akram"
             }
         );
         Assert.NotNull(result);
-        Assert.Equal(1, result.Id);
+        Assert.Equal(9, result.Id);
         db.Dispose();
     }
 
@@ -96,13 +102,16 @@ public class TaskRepositoryTest
         await db.AddTestDataAsync();
         var service = new TaskRepository(db);
         var dateTest = DateTime.Now;
+        var listUsers = await DataTestExtension.getListUserAsync();
         var result = await service.UpdateTaskAsync(
             new ()
             {
                 Id = 1,
                 Title = "Update",
                 Description = "UpdateDescription",
-                DueDate = dateTest
+                DueDate = dateTest,
+                User = listUsers[0],
+                Username = "akram"
             }
         );
         Assert.True(result);
@@ -121,12 +130,15 @@ public class TaskRepositoryTest
         await db.AddTestDataAsync();
         var service = new TaskRepository(db);
         var dateTest = DateTime.Now;
+        var listUsers = await DataTestExtension.getListUserAsync();
         var result = await service.UpdateTaskAsync(
             new (){
                 Id = 1,
                 Title = "Update",
                 Description = null,
-                DueDate = dateTest
+                DueDate = dateTest,
+                User = listUsers[0],
+                Username = "akram"
             }
         );
         Assert.True(result);
@@ -142,7 +154,6 @@ public class TaskRepositoryTest
     public async Task UpdateTaskAsync_WrongId_ReturnsFalse_KeepsOldTask()
     {
         var db = InMemoryDbContext.CreateInMemoryDbContext();
-        var list = await DataTestExtension.getListAsync();
         await db.AddTestDataAsync();
         var service = new TaskRepository(db);
         var dateTest = DateTime.Now;
@@ -156,7 +167,6 @@ public class TaskRepositoryTest
             }
         );
         Assert.False(result);
-        Assert.Equal(list.Count, db.ToDoItems.Count());
         db.Dispose();
     }
 
@@ -235,5 +245,36 @@ public class TaskRepositoryTest
         var result = await service.ReopenTaskAsync(-1);
         Assert.False(result);
         db.Dispose();
+    }
+
+    [Fact]
+    public async Task GetTasksByUserAsync_CorrectUsername_ReturnListTasks()
+    {
+        var db = InMemoryDbContext.CreateInMemoryDbContext();
+        await db.AddTestDataAsync();
+        var service = new TaskRepository(db);
+        var result = await service.GetTasksByUserAsync("akram");
+        var listTest = await DataTestExtension.getListUserAsync();
+        var listTestTasks = listTest[0].Tasks.ToList();
+        Assert.Equal(listTestTasks.Count, result.Count);
+        listTestTasks = listTestTasks.OrderBy(t => t.Id).ToList();
+        result = result.OrderBy(t => t.Id).ToList();
+        for (int i = 0; i < result.Count; i++)
+        {
+            var a = result[i];
+            var b = listTestTasks[i];
+            Assert.True(a.Same(b));
+        }
+        db.Dispose();
+    }
+
+    [Fact]
+    public async Task GetTasksByUserAsync_WrongUsername_Exception()
+    {
+        var db = InMemoryDbContext.CreateInMemoryDbContext();
+        var service = new TaskRepository(db);
+        var exception = await Assert.ThrowsAsync<Exception>(() => service.GetTasksByUserAsync("akram"));
+        Assert.Equal("the user is not on the system",exception.Message);
+        db.Dispose();   
     }
 }

@@ -63,6 +63,40 @@ public class TaskRepository : ITaskRepository
         return true;
     }
 
+    public async Task<List<TaskEntity>> GetTasksByUserAsync(string username)
+    {
+        var actUser = await _context.Users.FirstOrDefaultAsync(x => x.UserName == username);
+        if (actUser is null)
+            throw new Exception("the user is not on the system");
+        var list = actUser.Tasks;
+        return list.ToList();
+    }
+
+    public Task<TaskEntity> AssignTaskToUserAsync(TaskEntity task)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<bool> UpdateTaskFromUserAsync(TaskEntity newTask)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<bool> RemoveTaskFromUserAsync(int taskId, string username)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<bool> CompleteTaskOfUserAsync(int taskId, string username)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<bool> ReopenTaskOfUserAsync(int taskId, string username)
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task<bool> UpdateTaskAsync(TaskEntity updatedTask)
     {
         var result = await _context.ToDoItems.SingleOrDefaultAsync(x => x.Id == updatedTask.Id);

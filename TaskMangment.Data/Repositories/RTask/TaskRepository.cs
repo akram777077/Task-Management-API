@@ -72,9 +72,11 @@ public class TaskRepository : ITaskRepository
         return list.ToList();
     }
 
-    public Task<TaskEntity> AssignTaskToUserAsync(TaskEntity task)
+    public async Task<TaskEntity> AssignTaskToUserAsync(TaskEntity task)
     {
-        throw new NotImplementedException();
+        _context.ToDoItems.Add(task);
+        await _context.SaveChangesAsync();
+        return task;
     }
 
     public Task<bool> UpdateTaskFromUserAsync(TaskEntity newTask)

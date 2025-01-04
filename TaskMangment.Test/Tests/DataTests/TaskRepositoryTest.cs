@@ -1,3 +1,4 @@
+using TaskMangment.Data.Entities;
 using TaskMangment.Data.Repositories.RTask;
 using TaskMangment.Test.Data;
 using TaskMangment.Test.Extensions;
@@ -276,5 +277,27 @@ public class TaskRepositoryTest
         var exception = await Assert.ThrowsAsync<Exception>(() => service.GetTasksByUserAsync("akram"));
         Assert.Equal("the user is not on the system",exception.Message);
         db.Dispose();   
+    }
+    [Fact]
+    public async Task AssignTaskToUserAsync_CorrectTaskAndUser_ReturnsValidTask()
+    {
+        var db = InMemoryDbContext.CreateInMemoryDbContext();
+        var service = new TaskRepository(db);
+        var task = new TaskEntity
+        {
+            Title = "akramTask",
+            Description = "description",
+            DueDate = DateTime.Now,
+            Username = "akram"
+        };
+        var user = new UserEntity()
+        {
+            UserName = "akram",
+            Password = "test"
+        };
+        db.Users.Add(user);
+        var result = await service.AssignTaskToUserAsync(task);
+        Assert.Equal(1, result.Id);
+        db.Dispose();
     }
 }

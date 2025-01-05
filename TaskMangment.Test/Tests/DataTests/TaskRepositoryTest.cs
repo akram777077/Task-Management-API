@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using TaskMangment.Data.Entities;
 using TaskMangment.Data.Repositories.RTask;
 using TaskMangment.Test.Data;
@@ -298,6 +299,38 @@ public class TaskRepositoryTest
         db.Users.Add(user);
         var result = await service.AssignTaskToUserAsync(task);
         Assert.Equal(1, result.Id);
+        db.Dispose();
+    }
+
+    [Fact]
+    public async Task RemoveTaskFromUserAsync_CorrectTaskAndUser_ReturnsTrue()
+    {
+        var db = InMemoryDbContext.CreateInMemoryDbContext();
+        await db.AddTestDataAsync();
+        var service = new TaskRepository(db);
+        var result = await service.RemoveTaskFromUserAsync(1, "akram");
+        Assert.Null(await db.ToDoItems.FirstOrDefaultAsync(t => t.Id == 1));
+        Assert.True(result);
+        db.Dispose();
+    }
+    [Fact]
+    public async Task RemoveTaskFromUserAsync_WrongTaskAndCorrectUser_ThrowsException()
+    {
+        var db = InMemoryDbContext.CreateInMemoryDbContext();
+        await db.AddTestDataAsync();
+        var service = new TaskRepository(db);
+        var exception = await Assert.ThrowsAsync<Exception>(() => service.RemoveTaskFromUserAsync(-1, "akram"));
+        Assert.Equal("The task is not on the system",exception.Message);
+        db.Dispose();
+    }
+    [Fact]
+    public async Task RemoveTaskFromUserAsync_CorrectTaskAndWrongUser_ThrowsException()
+    {
+        var db = InMemoryDbContext.CreateInMemoryDbContext();
+        await db.AddTestDataAsync();
+        var service = new TaskRepository(db);
+        var result = await service.RemoveTaskFromUserAsync(1, "john");
+        Assert.False(result);
         db.Dispose();
     }
 }

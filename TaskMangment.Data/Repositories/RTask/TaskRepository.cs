@@ -84,9 +84,16 @@ public class TaskRepository : ITaskRepository
         throw new NotImplementedException();
     }
 
-    public Task<bool> RemoveTaskFromUserAsync(int taskId, string username)
+    public async Task<bool> RemoveTaskFromUserAsync(int taskId, string username)
     {
-        throw new NotImplementedException();
+        var result = await _context.ToDoItems.FirstOrDefaultAsync(x => x.Id == taskId);
+        if (result is null)
+            throw new Exception("The task is not on the system");
+        if (!result.Username.Equals(username))
+            return false;
+        _context.ToDoItems.Remove(result);
+        await _context.SaveChangesAsync();
+        return true;
     }
 
     public Task<bool> CompleteTaskOfUserAsync(int taskId, string username)

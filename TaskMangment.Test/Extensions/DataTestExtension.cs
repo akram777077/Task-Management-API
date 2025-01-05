@@ -26,8 +26,7 @@ public static class DataTestExtension
                         Description = "Description of Task 1",
                         DueDate = new DateTime(2025, 12, 11, 0, 0, 1),
                         IsCompleted = false,
-                        Username = "akram",
-                        User = null
+                        Username = "akram"
                     },
                     new TaskEntity()
                     {
@@ -36,8 +35,7 @@ public static class DataTestExtension
                         Description = "Description of Task 2",
                         DueDate = new DateTime(2025, 2, 1, 23, 12, 1),
                         IsCompleted = true,
-                        Username = "akram",
-                        User = null
+                        Username = "akram"
                     }
                 }
             },
@@ -54,8 +52,7 @@ public static class DataTestExtension
                         Description = "Description of Task 1",
                         DueDate = DateTime.Now.AddDays(3),
                         IsCompleted = false,
-                        Username = "john",
-                        User = null
+                        Username = "john"
                     },
                     new TaskEntity()
                     {
@@ -64,8 +61,7 @@ public static class DataTestExtension
                         Description = "Description of Task 2",
                         DueDate = DateTime.Now.AddDays(10),
                         IsCompleted = true,
-                        Username = "john",
-                        User = null
+                        Username = "john"
                     },
                     new TaskEntity()
                     {
@@ -74,8 +70,7 @@ public static class DataTestExtension
                         Description = "Description of Task 3",
                         DueDate = DateTime.Now.AddDays(14),
                         IsCompleted = false,
-                        Username = "john",
-                        User = null
+                        Username = "john"
                     }
                 }
             },
@@ -92,8 +87,7 @@ public static class DataTestExtension
                         Description = "Description of Task 1",
                         DueDate = DateTime.Now.AddDays(1),
                         IsCompleted = false,
-                        Username = "jane",
-                        User = null
+                        Username = "jane"
                     },
                     new TaskEntity()
                     {
@@ -103,7 +97,6 @@ public static class DataTestExtension
                         DueDate = DateTime.Now.AddDays(8),
                         IsCompleted = false,
                         Username = "jane",
-                        User = null
                     },
                     new TaskEntity()
                     {
@@ -112,8 +105,7 @@ public static class DataTestExtension
                         Description = "Description of Task 3",
                         DueDate = DateTime.Now.AddDays(12),
                         IsCompleted = true,
-                        Username = "jane",
-                        User = null
+                        Username = "jane"
                     }
                 }
             }

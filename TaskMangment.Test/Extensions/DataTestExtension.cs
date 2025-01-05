@@ -1,9 +1,11 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using TaskMangment.Data.Entities;
 using TaskMangment.Test.Data;
 using Xunit.Sdk;
 
 namespace TaskMangment.Test.Extensions;
+[ExcludeFromCodeCoverage]
 
 public static class DataTestExtension
 {

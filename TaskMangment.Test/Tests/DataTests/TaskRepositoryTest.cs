@@ -333,4 +333,38 @@ public class TaskRepositoryTest
         Assert.False(result);
         db.Dispose();
     }
+    [Fact]
+    public async Task CompleteTaskOfUserAsync_CorrectTaskAndUser_ReturnTrue()
+    {
+        var db = InMemoryDbContext.CreateInMemoryDbContext();
+        await db.AddTestDataAsync();
+        var service = new TaskRepository(db);
+        var result = await service.CompleteTaskOfUserAsync(1, "akram");
+        Assert.True(result);
+        var editTask = await db.ToDoItems.FirstOrDefaultAsync(t => t.Id == 1);
+        Assert.True(editTask?.IsCompleted);
+        db.Dispose();
+    }
+    [Fact]
+    public async Task CompleteTaskOfUserAsync_CorrectTaskWrongUser_ReturnFalse()
+    {
+        var db = InMemoryDbContext.CreateInMemoryDbContext();
+        await db.AddTestDataAsync();
+        var service = new TaskRepository(db);
+        var result = await service.CompleteTaskOfUserAsync(1, "jhon");
+        Assert.False(result);
+        var editTask = await db.ToDoItems.FirstOrDefaultAsync(t => t.Id == 1);
+        Assert.False(editTask?.IsCompleted);
+        db.Dispose();
+    }
+    [Fact]
+    public async Task CompleteTaskOfUserAsync_WrongTask_ReturnFalse()
+    {
+        var db = InMemoryDbContext.CreateInMemoryDbContext();
+        await db.AddTestDataAsync();
+        var service = new TaskRepository(db);
+        var exception = await Assert.ThrowsAsync<Exception>(() => service.CompleteTaskOfUserAsync(-1, "jhon"));
+        Assert.Equal("The task is not on the system",exception.Message);
+        db.Dispose();
+    }
 }

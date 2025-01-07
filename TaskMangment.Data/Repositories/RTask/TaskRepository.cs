@@ -110,9 +110,17 @@ public class TaskRepository : ITaskRepository
         return true;
     }
 
-    public Task<bool> ReopenTaskOfUserAsync(int taskId, string username)
+    public async Task<bool> ReopenTaskOfUserAsync(int taskId, string username)
     {
-        throw new NotImplementedException();
+        var result = await _context.ToDoItems.FirstOrDefaultAsync(x => x.Id == taskId);
+        if (result is null)
+            throw new Exception("The task is not on the system");
+        if (!result.Username.Equals(username))
+            return false;
+        result.IsCompleted = false;
+        _context.ToDoItems.Update(result);
+        await _context.SaveChangesAsync();
+        return true;
     }
 
     public async Task<bool> UpdateTaskAsync(TaskEntity updatedTask)

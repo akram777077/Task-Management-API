@@ -344,6 +344,7 @@ public class TaskRepositoryTest
         var editTask = await db.ToDoItems.FirstOrDefaultAsync(t => t.Id == 1);
         Assert.True(editTask?.IsCompleted);
         db.Dispose();
+        
     }
     [Fact]
     public async Task CompleteTaskOfUserAsync_CorrectTaskWrongUser_ReturnFalse()
@@ -364,6 +365,41 @@ public class TaskRepositoryTest
         await db.AddTestDataAsync();
         var service = new TaskRepository(db);
         var exception = await Assert.ThrowsAsync<Exception>(() => service.CompleteTaskOfUserAsync(-1, "jhon"));
+        Assert.Equal("The task is not on the system",exception.Message);
+        db.Dispose();
+    }
+
+    [Fact]
+    public async Task ReopenTaskOfUserAsync_CorrectTaskWrongUser_ReturnFalse()
+    {
+        var db = InMemoryDbContext.CreateInMemoryDbContext();
+        await db.AddTestDataAsync();
+        var service = new TaskRepository(db);
+        var result = await service.ReopenTaskOfUserAsync(2, "jhon");
+        Assert.False(result);
+        var editTask = await db.ToDoItems.FirstOrDefaultAsync(t => t.Id == 2);
+        Assert.True(editTask?.IsCompleted);
+        db.Dispose();
+    }
+    [Fact]
+    public async Task ReopenTaskOfUserAsync_CorrectTaskAndUser_ReturnTrue()
+    {
+        var db = InMemoryDbContext.CreateInMemoryDbContext();
+        await db.AddTestDataAsync();
+        var service = new TaskRepository(db);
+        var result = await service.ReopenTaskOfUserAsync(2, "akram");
+        Assert.True(result);
+        var editTask = await db.ToDoItems.FirstOrDefaultAsync(t => t.Id == 2);
+        Assert.False(editTask?.IsCompleted);
+        db.Dispose();
+    }
+    [Fact]
+    public async Task ReopenTaskOfUserAsync_WrongTask_ThrowException()
+    {
+        var db = InMemoryDbContext.CreateInMemoryDbContext();
+        await db.AddTestDataAsync();
+        var service = new TaskRepository(db);
+        var exception = await Assert.ThrowsAsync<Exception>(() => service.ReopenTaskOfUserAsync(-1, "jhon"));
         Assert.Equal("The task is not on the system",exception.Message);
         db.Dispose();
     }

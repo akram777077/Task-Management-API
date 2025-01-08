@@ -80,9 +80,16 @@ public class TaskRepository : ITaskRepository
         return task;
     }
 
-    public Task<bool> UpdateTaskFromUserAsync(TaskEntity newTask)
+    public async Task<bool> UpdateTaskFromUserAsync(TaskEntity newTask)
     {
-        throw new NotImplementedException();
+        var result = await _context.ToDoItems.FirstOrDefaultAsync(x => x.Id == newTask.Id);
+        if (result is null)
+            return false;
+        _context.Entry(result)
+        .CurrentValues
+        .SetValues(newTask);
+        await _context.SaveChangesAsync();
+        return true;
     }
 
     public async Task<bool> RemoveTaskFromUserAsync(int taskId, string username)

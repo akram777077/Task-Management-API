@@ -403,4 +403,33 @@ public class TaskRepositoryTest
         Assert.Equal("The task is not on the system",exception.Message);
         db.Dispose();
     }
+    [Fact]
+    public async Task UpdateTaskFromUserAsync_CorrectTaskAndUser_ReturnTrue()
+    {
+        var db = InMemoryDbContext.CreateInMemoryDbContext();
+        await db.AddTestDataAsync();
+        var service = new TaskRepository(db);
+        var targetTask = await db.ToDoItems.AsNoTracking().FirstOrDefaultAsync(t => t.Id == 1);
+        targetTask!.Title = "New Title";
+        var result = await service.UpdateTaskFromUserAsync(targetTask);
+        Assert.True(result);
+        var editTask = await db.ToDoItems.FirstOrDefaultAsync(t => t.Id == 1);
+        Assert.Equal("New Title",editTask!.Title);
+        db.Dispose();
+    }
+    [Fact]
+    public async Task UpdateTaskFromUserAsync_WrongTaskAndCorrectUser_ReturnFalse()
+    {
+        var db = InMemoryDbContext.CreateInMemoryDbContext();
+        await db.AddTestDataAsync();
+        var service = new TaskRepository(db);
+        var targetTask = await db.ToDoItems.AsNoTracking().FirstOrDefaultAsync(t => t.Id == 1);
+        targetTask!.Id = -1;
+        targetTask!.Title = "New Title";
+        var result = await service.UpdateTaskFromUserAsync(targetTask);
+        Assert.False(result);
+        var editTask = await db.ToDoItems.FirstOrDefaultAsync(t => t.Id == 1);
+        Assert.Equal("Task 1",editTask!.Title);
+        db.Dispose();
+    }
 }

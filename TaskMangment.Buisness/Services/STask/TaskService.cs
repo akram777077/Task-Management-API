@@ -59,6 +59,36 @@ public class TaskService : ITaskService
         return await _repository.ReopenTaskAsync(id);
     }
 
+    public Task<List<TaskModel>> GetByUserAsync(string username)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<TaskModel> AssignToUserAsync(TaskModel task)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<bool> UpdateFromUserAsync(TaskModel newTask)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<bool> RemoveFromUserAsync(int taskId, string username)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<bool> CompleteOfUserAsync(int taskId, string username)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<bool> ReopenOfUserAsync(int taskId, string username)
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task<bool> UpdateAsync(TaskModel updatedTask)
     {
         if(updatedTask is {Id : null or  <= 0})

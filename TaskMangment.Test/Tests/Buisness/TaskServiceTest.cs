@@ -241,5 +241,42 @@ using Xunit;
             Assert.Equal(date, taskEntity.DueDate);
             Assert.False(taskEntity.IsCompleted);
         }
+        [Fact]
+        public async Task GetByUserAsync_ShouldReturnTaskModels()
+        {
+            // Arrange
+            string username = "testuser";
+            var tasksEntities = new List<TaskEntity>
+            {
+                new TaskEntity { Id = 1, Title = "Task1", Username = username,Description = "Description 1", DueDate = DateTime.UtcNow, IsCompleted = false },
+                new TaskEntity { Id = 2, Title = "Task2", Username = username, Description = "Description 2", DueDate = DateTime.UtcNow.AddDays(5), IsCompleted = true },
+                new TaskEntity { Id = 3, Title = "Task2", Username = username, Description = "Description 3", DueDate = DateTime.UtcNow.AddDays(7), IsCompleted = false },
+                new TaskEntity { Id = 4, Title = "Task2", Username = username, Description = "Description 4", DueDate = DateTime.UtcNow.AddDays(10), IsCompleted = true }
+            };
+
+            var expectedModels = tasksEntities.Select(te => te.ToModel()).ToList();
+
+            _repositoryMock
+                .Setup(repo => repo.GetTasksByUserAsync(username))
+                .ReturnsAsync(tasksEntities);
+
+            // Act
+            var result = await _taskService.GetByUserAsync(username);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(expectedModels.Count, result.Count);
+            for (int i = 0; i < result.Count; i++)
+            {
+                Assert.Equal(expectedModels[i].Id, result[i].Id);
+                Assert.Equal(expectedModels[i].Description, result[i].Description);
+                Assert.Equal(expectedModels[i].IsCompleted, result[i].IsCompleted);
+                Assert.Equal(expectedModels[i].Title, result[i].Title);
+                Assert.Equal(expectedModels[i].DueDate, result[i].DueDate);
+            }
+
+            _repositoryMock.Verify(repo => repo.GetTasksByUserAsync(username), Times.Once);
+        }
+
     }
 

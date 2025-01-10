@@ -2,6 +2,7 @@ using System;
 using Microsoft.EntityFrameworkCore.Query;
 using TaskMangment.Buisness.Mapping;
 using TaskMangment.Buisness.Models;
+using TaskMangment.Data.Entities;
 using TaskMangment.Data.Repositories.RTask;
 
 namespace TaskMangment.Buisness.Services.STask;
@@ -59,9 +60,11 @@ public class TaskService : ITaskService
         return await _repository.ReopenTaskAsync(id);
     }
 
-    public Task<List<TaskModel>> GetByUserAsync(string username)
+    public async Task<List<TaskModel>> GetByUserAsync(string username)
     {
-        throw new NotImplementedException();
+        var tasksEntites = await _repository.GetTasksByUserAsync(username);
+        var tasksModels = tasksEntites.Select(x => x.ToModel()).ToList();
+        return tasksModels;
     }
 
     public Task<TaskModel> AssignToUserAsync(TaskModel task)

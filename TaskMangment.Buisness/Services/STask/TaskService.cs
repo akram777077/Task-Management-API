@@ -91,7 +91,9 @@ public class TaskService : ITaskService
 
     public Task<bool> ReopenOfUserAsync(int taskId, string username)
     {
-        throw new NotImplementedException();
+        if(taskId < 1)
+            throw new ArgumentException("Id must be greater than 0");
+        return _repository.ReopenTaskOfUserAsync(taskId, username);
     }
 
     public async Task<bool> UpdateAsync(TaskModel updatedTask)

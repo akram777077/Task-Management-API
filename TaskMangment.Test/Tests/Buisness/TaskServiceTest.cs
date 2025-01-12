@@ -328,6 +328,57 @@ using Xunit;
             Assert.False(result);
             _repositoryMock.Verify(repo => repo.CompleteTaskOfUserAsync(validTaskId, username), Times.Once);
         }
+        [Fact]
+        public async Task ReopenOfUserAsync_ThrowsArgumentException_WhenTaskIdIsLessThan1()
+        {
+            // Arrange
+            int invalidTaskId = 0;
+            string username = "testUser";
+
+            // Act & Assert
+            var exception = await Assert.ThrowsAsync<ArgumentException>(() =>
+                _taskService.ReopenOfUserAsync(invalidTaskId, username));
+
+            Assert.Equal("Id must be greater than 0", exception.Message);
+        }
+
+        [Fact]
+        public async Task ReopenOfUserAsync_CallsRepositoryMethod_WhenTaskIdIsValid()
+        {
+            // Arrange
+            int validTaskId = 1;
+            string username = "testUser";
+
+            _repositoryMock
+                .Setup(repo => repo.ReopenTaskOfUserAsync(validTaskId, username))
+                .ReturnsAsync(true);
+
+            // Act
+            var result = await _taskService.ReopenOfUserAsync(validTaskId, username);
+
+            // Assert
+            Assert.True(result);
+            _repositoryMock.Verify(repo => repo.ReopenTaskOfUserAsync(validTaskId, username), Times.Once);
+        }
+
+        [Fact]
+        public async Task ReopenOfUserAsync_ReturnsFalse_WhenRepositoryReturnsFalse()
+        {
+            // Arrange
+            int validTaskId = 1;
+            string username = "testUser";
+
+            _repositoryMock
+                .Setup(repo => repo.ReopenTaskOfUserAsync(validTaskId, username))
+                .ReturnsAsync(false);
+
+            // Act
+            var result = await _taskService.ReopenOfUserAsync(validTaskId, username);
+
+            // Assert
+            Assert.False(result);
+            _repositoryMock.Verify(repo => repo.ReopenTaskOfUserAsync(validTaskId, username), Times.Once);
+        }
 
 
     }

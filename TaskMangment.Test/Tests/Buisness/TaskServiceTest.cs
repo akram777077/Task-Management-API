@@ -379,7 +379,58 @@ using Xunit;
             Assert.False(result);
             _repositoryMock.Verify(repo => repo.ReopenTaskOfUserAsync(validTaskId, username), Times.Once);
         }
+        [Fact]
+        public async Task RemoveFromUserAsync_ValidTaskIdAndUsername_ReturnsTrue()
+        {
+            // Arrange
+            var mockRepository = new Mock<ITaskRepository>();
+            mockRepository
+                .Setup(repo => repo.RemoveTaskFromUserAsync(It.IsAny<int>(), It.IsAny<string>()))
+                .ReturnsAsync(true);
 
+            var taskService = new TaskService(mockRepository.Object);
+            int taskId = 1;
+            string username = "testuser";
 
+            // Act
+            var result = await taskService.RemoveFromUserAsync(taskId, username);
+
+            // Assert
+            Assert.True(result);
+            mockRepository.Verify(repo => repo.RemoveTaskFromUserAsync(taskId, username), Times.Once);
+        }
+
+        [Fact]
+        public void RemoveFromUserAsync_InvalidTaskId_ThrowsArgumentException()
+        {
+            // Arrange
+            var mockRepository = new Mock<ITaskRepository>();
+            var taskService = new TaskService(mockRepository.Object);
+            int invalidTaskId = 0;
+            string username = "testuser";
+
+            // Act & Assert
+            var exception = Assert.ThrowsAsync<ArgumentException>(() => taskService.RemoveFromUserAsync(invalidTaskId, username));
+            Assert.Equal("Id must be greater than 0", exception.Result.Message);
+        }
+        [Fact]
+        public async Task RemoveFromUserAsync_ValidTaskIdAndWrongUsername_ReturnsFalse()
+        {
+            // Arrange
+            var mockRepository = new Mock<ITaskRepository>();
+            mockRepository
+                .Setup(repo => repo.RemoveTaskFromUserAsync(It.IsAny<int>(), It.IsAny<string>()))
+                .ReturnsAsync(false);
+
+            var taskService = new TaskService(mockRepository.Object);
+            int taskId = 1;
+            string username = "notTheUserOfThisTask";
+
+            // Act
+            var result = await taskService.RemoveFromUserAsync(taskId, username);
+
+            // Assert
+            Assert.False(result);
+        }
     }
 

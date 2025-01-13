@@ -79,7 +79,9 @@ public class TaskService : ITaskService
 
     public Task<bool> RemoveFromUserAsync(int taskId, string username)
     {
-        throw new NotImplementedException();
+        if(taskId < 1)
+            throw new ArgumentException("Id must be greater than 0");
+        return _repository.RemoveTaskFromUserAsync(taskId, username);
     }
 
     public Task<bool> CompleteOfUserAsync(int taskId, string username)

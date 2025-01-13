@@ -401,7 +401,7 @@ using Xunit;
         }
 
         [Fact]
-        public void RemoveFromUserAsync_InvalidTaskId_ThrowsArgumentException()
+        public async Task RemoveFromUserAsync_InvalidTaskId_ThrowsArgumentException()
         {
             // Arrange
             var mockRepository = new Mock<ITaskRepository>();
@@ -410,8 +410,8 @@ using Xunit;
             string username = "testuser";
 
             // Act & Assert
-            var exception = Assert.ThrowsAsync<ArgumentException>(() => taskService.RemoveFromUserAsync(invalidTaskId, username));
-            Assert.Equal("Id must be greater than 0", exception.Result.Message);
+            var exception = await Assert.ThrowsAsync<ArgumentException>(() => taskService.RemoveFromUserAsync(invalidTaskId, username));
+            Assert.Equal("Id must be greater than 0", exception.Message);
         }
         [Fact]
         public async Task RemoveFromUserAsync_ValidTaskIdAndWrongUsername_ReturnsFalse()

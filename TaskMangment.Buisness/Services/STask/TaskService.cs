@@ -74,7 +74,10 @@ public class TaskService : ITaskService
 
     public Task<bool> UpdateFromUserAsync(TaskModel newTask)
     {
-        throw new NotImplementedException();
+        if(newTask.Id < 1)
+            throw new ArgumentException("Id must be greate than 0");
+        var entity = newTask.ToEntity();
+        return _repository.UpdateTaskFromUserAsync(entity);
     }
 
     public Task<bool> RemoveFromUserAsync(int taskId, string username)

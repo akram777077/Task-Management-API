@@ -432,5 +432,33 @@ using Xunit;
             // Assert
             Assert.False(result);
         }
+        [Fact]
+        public async Task UpdateFromUserAsync_ValidTaskModel_ReturnsTrue()
+        {
+            // Arrange
+            var taskModel = new TaskModel(1, "Test Task", "Description", DateTime.UtcNow);
+            var repositoryMock = new Mock<ITaskRepository>();
+            repositoryMock.Setup(repo => repo.UpdateTaskFromUserAsync(It.IsAny<TaskEntity>())).ReturnsAsync(true);
+            var taskService = new TaskService(repositoryMock.Object);
+
+            // Act
+            var result = await taskService.UpdateFromUserAsync(taskModel);
+
+            // Assert
+            Assert.True(result);
+            repositoryMock.Verify(repo => repo.UpdateTaskFromUserAsync(It.IsAny<TaskEntity>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task UpdateFromUserAsync_InvalidTaskModel_ThrowsArgumentException()
+        {
+            // Arrange
+            var taskModel = new TaskModel(0, "Test Task", "Description", DateTime.UtcNow);
+            var taskService = new TaskService(new Mock<ITaskRepository>().Object);
+
+            // Act & Assert
+            await Assert.ThrowsAsync<ArgumentException>(() => taskService.UpdateFromUserAsync(taskModel));
+        }
+
     }
 

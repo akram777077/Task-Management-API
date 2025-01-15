@@ -1,4 +1,5 @@
 using System;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore.Query;
 using TaskMangment.Buisness.Mapping;
 using TaskMangment.Buisness.Models;
@@ -67,9 +68,11 @@ public class TaskService : ITaskService
         return tasksModels;
     }
 
-    public Task<TaskModel> AssignToUserAsync(TaskModel task)
+    public async Task<TaskModel> AssignToUserAsync(TaskModel task)
     {
-        throw new NotImplementedException();
+        var entity = task.ToEntity();
+        var result = await _repository.AssignTaskToUserAsync(entity);
+        return result.ToModel();
     }
 
     public Task<bool> UpdateFromUserAsync(TaskModel newTask)

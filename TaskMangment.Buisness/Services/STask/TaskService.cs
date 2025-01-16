@@ -75,33 +75,33 @@ public class TaskService : ITaskService
         return result.ToModel();
     }
 
-    public Task<bool> UpdateFromUserAsync(TaskModel newTask)
+    public async Task<bool> UpdateFromUserAsync(TaskModel newTask)
     {
         if(newTask.Id < 1)
             throw new ArgumentException("Id must be greate than 0");
         var entity = newTask.ToEntity();
-        return _repository.UpdateTaskFromUserAsync(entity);
+        return await _repository.UpdateTaskFromUserAsync(entity);
     }
 
-    public Task<bool> RemoveFromUserAsync(int taskId, string username)
+    public async Task<bool> RemoveFromUserAsync(int taskId, string username)
     {
         if(taskId < 1)
             throw new ArgumentException("Id must be greater than 0");
-        return _repository.RemoveTaskFromUserAsync(taskId, username);
+        return await _repository.RemoveTaskFromUserAsync(taskId, username);
     }
 
-    public Task<bool> CompleteOfUserAsync(int taskId, string username)
+    public async Task<bool> CompleteOfUserAsync(int taskId, string username)
     {
         if(taskId < 1)
             throw new ArgumentException("Id must be greater than 0");
-        return _repository.CompleteTaskOfUserAsync(taskId, username);
+        return await _repository.CompleteTaskOfUserAsync(taskId, username);
     }
 
-    public Task<bool> ReopenOfUserAsync(int taskId, string username)
+    public async Task<bool> ReopenOfUserAsync(int taskId, string username)
     {
         if(taskId < 1)
             throw new ArgumentException("Id must be greater than 0");
-        return _repository.ReopenTaskOfUserAsync(taskId, username);
+        return await _repository.ReopenTaskOfUserAsync(taskId, username);
     }
 
     public async Task<bool> UpdateAsync(TaskModel updatedTask)

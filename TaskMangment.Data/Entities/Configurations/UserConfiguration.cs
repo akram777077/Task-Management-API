@@ -21,5 +21,9 @@ public class UserConfiguration : IEntityTypeConfiguration<UserEntity>
             .WithOne(t => t.User)
             .HasForeignKey(t => t.Username)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Property(u => u.RoleName)
+            .IsRequired()
+            .HasMaxLength(50);
     }
 }

@@ -11,12 +11,20 @@ public static class DataTestExtension
 {
     public static Task<List<UserEntity>> getListUserAsync()
     {
+        var roles = new[]
+        {
+            new RoleEntity() { Name = "akram" },
+            new RoleEntity() { Name = "salim" },
+            new RoleEntity() { Name = "admin" }
+        };
         var result = new List<UserEntity>()
         {
             new UserEntity()
             {
                 UserName = "akram",
                 Password = "password1",
+                RoleName = "akram",
+                Role = roles[0],
                 Tasks = new List<TaskEntity>()
                 {
                     new TaskEntity()
@@ -43,6 +51,8 @@ public static class DataTestExtension
             {
                 UserName = "john",
                 Password = "password2",
+                RoleName = "salim",
+                Role = roles[1],
                 Tasks = new List<TaskEntity>()
                 {
                     new TaskEntity()
@@ -78,6 +88,8 @@ public static class DataTestExtension
             {
                 UserName = "jane",
                 Password = "password3",
+                RoleName = "akram",
+                Role = roles[0],
                 Tasks = new List<TaskEntity>()
                 {
                     new TaskEntity()
@@ -123,7 +135,8 @@ public static class DataTestExtension
 
     public static async Task AddTestDataAsync(this InMemoryDbContext context)
     {
-        context.Users.AddRange(await getListUserAsync());
+        var listUsers = await getListUserAsync();
+        context.Users.AddRange(listUsers);
         await context.SaveChangesAsync();
     }
 

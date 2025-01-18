@@ -294,7 +294,9 @@ public class TaskRepositoryTest
         var user = new UserEntity()
         {
             UserName = "akram",
-            Password = "test"
+            Password = "test",
+            RoleName = "admin",
+            Role = new RoleEntity(){Name = "admin"}
         };
         db.Users.Add(user);
         var result = await service.AssignTaskToUserAsync(task);

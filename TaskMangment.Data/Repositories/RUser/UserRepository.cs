@@ -17,9 +17,11 @@ public class UserRepository : IUserRepository
         throw new NotImplementedException();
     }
 
-    public Task<UserEntity> CreateUserAsync(UserEntity user)
+    public async Task<UserEntity> CreateUserAsync(UserEntity user)
     {
-        throw new NotImplementedException();
+        _context.Users.Add(user);
+        await _context.SaveChangesAsync();
+        return user;
     }
 
     public Task<bool> UpdateUserAsync(UserEntity user)

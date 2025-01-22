@@ -5,6 +5,7 @@ using TaskMangment.Data.Entities;
 using TaskMangment.Data.Repositories.RUser;
 using TaskMangment.Test.Data;
 
+namespace TaskMangment.Test.Tests.DataTests;
 public class UserRepositoryTest
 {
     [Fact]

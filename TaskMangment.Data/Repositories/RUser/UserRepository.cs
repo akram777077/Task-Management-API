@@ -29,8 +29,13 @@ public class UserRepository : IUserRepository
         throw new NotImplementedException();
     }
 
-    public Task<bool> DeleteUserAsync(string username)
+    public async Task<bool> DeleteUserAsync(string username)
     {
-        throw new NotImplementedException();
+        var result = await _context.Users.FirstOrDefaultAsync(x => x.UserName == username);
+        if (result is null)
+            return false;
+        _context.Users.Remove(result);
+        await _context.SaveChangesAsync();
+        return true;
     }
 }

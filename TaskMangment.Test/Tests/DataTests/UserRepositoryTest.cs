@@ -4,6 +4,7 @@ using TaskMangment.Data;
 using TaskMangment.Data.Entities;
 using TaskMangment.Data.Repositories.RUser;
 using TaskMangment.Test.Data;
+using TaskMangment.Test.Extensions;
 
 namespace TaskMangment.Test.Tests.DataTests;
 public class UserRepositoryTest
@@ -24,5 +25,27 @@ public class UserRepositoryTest
         await repo.CreateUserAsync(user);
         var result = await db.Users.FirstOrDefaultAsync(x => x.UserName == user.UserName);
         Assert.NotNull(result);
+    }
+    [Fact]
+    public async Task DeleteUserAsync_validUser_ShouldDeleteUser()
+    {
+        var db = InMemoryDbContext.CreateInMemoryDbContext();
+        await db.AddTestDataAsync();
+        var repo = new UserRepository(db);
+        bool deleteResult = await repo.DeleteUserAsync("akram");
+        var result = await db.Users.FirstOrDefaultAsync(x => x.UserName == "akram");
+        Assert.True(deleteResult);
+        Assert.Null(result);
+    }
+    [Fact]
+    public async Task DeleteUserAsync_invalidUser_ShouldNotDeleteUser()
+    {
+        var db = InMemoryDbContext.CreateInMemoryDbContext();
+        await db.AddTestDataAsync();
+        var repo = new UserRepository(db);
+        var deleteResult = await repo.DeleteUserAsync("aa");
+        var result = await db.Users.FirstOrDefaultAsync(x => x.UserName == "aa");
+        Assert.False(deleteResult);
+        Assert.Null(result);
     }
 }

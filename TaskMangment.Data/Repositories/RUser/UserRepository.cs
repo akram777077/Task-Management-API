@@ -12,9 +12,11 @@ public class UserRepository : IUserRepository
         _context = context;
     }
 
-    public Task<UserEntity?> AuthorizeUserAsync(UserEntity user)
+    public async Task<UserEntity?> AuthorizeUserAsync(UserEntity user)
     {
-        throw new NotImplementedException();
+        return await _context.Users.AsNoTracking().FirstOrDefaultAsync(
+            x => x.UserName == user.UserName && x.Password == user.Password
+        );
     }
 
     public async Task<UserEntity> CreateUserAsync(UserEntity user)

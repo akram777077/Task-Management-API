@@ -24,9 +24,16 @@ public class UserRepository : IUserRepository
         return user;
     }
 
-    public Task<bool> UpdateUserAsync(UserEntity user)
+    public async Task<bool> UpdateUserAsync(UserEntity user)
     {
-        throw new NotImplementedException();
+        var result = await _context.Users.FirstOrDefaultAsync(x => x.UserName== user.UserName);
+        if (result is null)
+            return false;
+        _context.Entry(result)
+        .CurrentValues
+        .SetValues(user);
+        await _context.SaveChangesAsync();
+        return true;
     }
 
     public async Task<bool> DeleteUserAsync(string username)

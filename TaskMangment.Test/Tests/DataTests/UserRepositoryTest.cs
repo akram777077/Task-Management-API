@@ -81,12 +81,10 @@ public class UserRepositoryTest
         var db = InMemoryDbContext.CreateInMemoryDbContext();
         await db.AddTestDataAsync();
         var repo = new UserRepository(db);
-        var user = await repo.AuthorizeUserAsync(new UserEntity()
+        var user = await repo.AuthorizeUserAsync(new()
         {
-            UserName = "akram",
+            Username = "akram",
             Password = "password1",
-            RoleName = "nothing",
-            Role = new RoleEntity() { Name = "nothing" }
         });
         Assert.NotNull(user);
     }
@@ -96,12 +94,10 @@ public class UserRepositoryTest
         var db = InMemoryDbContext.CreateInMemoryDbContext();
         await db.AddTestDataAsync();
         var repo = new UserRepository(db);
-        var user = await repo.AuthorizeUserAsync(new UserEntity()
+        var user = await repo.AuthorizeUserAsync(new ()
         {
-            UserName = "akram",
-            Password = "wrongPassword",
-            RoleName = "nothing",
-            Role = new RoleEntity() { Name = "nothing" }
+            Username = "akram",
+            Password = "wrongPassword"
         });
         Assert.Null(user);
     }
@@ -111,12 +107,10 @@ public class UserRepositoryTest
         var db = InMemoryDbContext.CreateInMemoryDbContext();
         await db.AddTestDataAsync();
         var repo = new UserRepository(db);
-        var user = await repo.AuthorizeUserAsync(new UserEntity()
+        var user = await repo.AuthorizeUserAsync(new ()
         {
-            UserName = "wrongUsername",
-            Password = "password1",
-            RoleName = "nothing",
-            Role = new RoleEntity() { Name = "nothing" }
+            Username = "wrongUsername",
+            Password = "password1"
         });
         Assert.Null(user);
     }
@@ -126,12 +120,10 @@ public class UserRepositoryTest
         var db = InMemoryDbContext.CreateInMemoryDbContext();
         await db.AddTestDataAsync();
         var repo = new UserRepository(db);
-        var user = await repo.AuthorizeUserAsync(new UserEntity()
+        var user = await repo.AuthorizeUserAsync(new()
         {
-            UserName = "wrongUsername",
-            Password = "wrongPassword",
-            RoleName = "nothing",
-            Role = new RoleEntity() { Name = "nothing" }
+            Username = "wrongUsername",
+            Password = "wrongPassword"
         });
         Assert.Null(user);
     }

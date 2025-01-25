@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using TaskMangment.Data.Entities;
+using TaskMangment.Data.Mapping;
 
 namespace TaskMangment.Data.Repositories.RUser;
 
@@ -12,18 +13,19 @@ public class UserRepository : IUserRepository
         _context = context;
     }
 
-    public async Task<UserEntity?> AuthorizeUserAsync(UserEntity user)
+    public async Task<AuthorizeUserEntity?> AuthorizeUserAsync(LoginEntity user)
     {
-        return await _context.Users.AsNoTracking().FirstOrDefaultAsync(
-            x => x.UserName == user.UserName && x.Password == user.Password
+        var result = await _context.Users.AsNoTracking().FirstOrDefaultAsync(
+            x => x.UserName == user.Username && x.Password == user.Password
         );
+        return result?.ToAuthorizeUser();
     }
 
-    public async Task<UserEntity> CreateUserAsync(UserEntity user)
+    public async Task<AuthorizeUserEntity> CreateUserAsync(UserEntity user)
     {
         _context.Users.Add(user);
         await _context.SaveChangesAsync();
-        return user;
+        return user.ToAuthorizeUser();
     }
 
     public async Task<bool> UpdateUserAsync(UserEntity user)

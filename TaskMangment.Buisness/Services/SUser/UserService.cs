@@ -7,16 +7,18 @@ namespace TaskMangment.Buisness.Services.SUser;
 
 public class UserService : IUserService
 {
-    private readonly UserRepository _repository;
+    private readonly IUserRepository _repository;
 
-    public UserService(UserRepository repository)
+    public UserService(IUserRepository repository)
     {
         _repository = repository;
     }
 
-    public Task<AuthorizeUserModel?> AuthorizeAsync(LoginModel user)
+    public async Task<AuthorizeUserModel?> AuthorizeAsync(LoginModel user)
     {
-        throw new NotImplementedException();
+        var entity = user.ToEntity();
+        var result = await _repository.AuthorizeUserAsync(entity);
+        return result?.ToModel();
     }
 
     public Task<AuthorizeUserModel> CreateAsync(UserModel user)

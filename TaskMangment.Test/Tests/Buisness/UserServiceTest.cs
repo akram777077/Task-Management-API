@@ -51,5 +51,36 @@ namespace TaskMangment.Test.Tests.Buisness
             // Assert
             Assert.Null(authorizeUserModel);
         }
+        [Fact]
+        public async Task DeleteAsync_validUserName_ReturnTrue()
+        {
+            // Arrange
+            var username = "virtualUser";
+            var virtualUser = new UserModel(username,"1234","admin");
+            _repositoryMock.Setup(r => r.DeleteUserAsync(username)).ReturnsAsync(true);
+
+            // Act
+            var result = await _userService.DeleteAsync(username);
+
+            // Assert
+            Assert.True(result);
+            _repositoryMock.Verify(r => r.DeleteUserAsync(username), Times.Once);
+        }
+        [Fact]
+        public async Task DeleteAsync_invalidUserName_ReturnFalse()
+        {
+            // Arrange
+            var username = "wrongUsername";
+            var existingUsername = "existingUser";
+            _repositoryMock.Setup(r => r.DeleteUserAsync(existingUsername)).ReturnsAsync(true);
+            _repositoryMock.Setup(r => r.DeleteUserAsync(username)).ReturnsAsync(false);
+
+            // Act
+            var result = await _userService.DeleteAsync(username);
+
+            // Assert
+            Assert.False(result);
+            _repositoryMock.Verify(r => r.DeleteUserAsync(username), Times.Once);
+        }
     }
 }

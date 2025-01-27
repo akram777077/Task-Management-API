@@ -26,9 +26,9 @@ public class UserService : IUserService
         throw new NotImplementedException();
     }
 
-    public Task<bool> DeleteAsync(string username)
+    public async Task<bool> DeleteAsync(string username)
     {
-        throw new NotImplementedException();
+        return await _repository.DeleteUserAsync(username);
     }
 
     public Task<bool> UpdateAsync(UserModel user)

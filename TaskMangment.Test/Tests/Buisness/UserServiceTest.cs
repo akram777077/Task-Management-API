@@ -98,5 +98,36 @@ namespace TaskMangment.Test.Tests.Buisness
             Assert.Equal("validUsername", authorizeUserModel.Username);
             Assert.Equal("admin", authorizeUserModel.Role);
         }
+        [Fact]
+        public async Task UpdateAsync_ValidUser_ReturnsTrue()
+        {
+            // Arrange
+            var user = new UserModel("validUsername", "validPassword", "admin");
+            var entity = user.ToEntity();
+            _repositoryMock.Setup(r => r.UpdateUserAsync(It.IsAny<UserEntity>())).ReturnsAsync(true);
+
+            // Act
+            var result = await _userService.UpdateAsync(user);
+
+            // Assert
+            Assert.True(result);
+            _repositoryMock.Verify(r => r.UpdateUserAsync(It.IsAny<UserEntity>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task UpdateAsync_InvalidUser_ReturnsFalse()
+        {
+            // Arrange
+            var user = new UserModel("invalidUsername", "invalidPassword", "invalidRole");
+            var entity = user.ToEntity();
+            _repositoryMock.Setup(r => r.UpdateUserAsync(It.IsAny<UserEntity>())).ReturnsAsync(false);
+
+            // Act
+            var result = await _userService.UpdateAsync(user);
+
+            // Assert
+            Assert.False(result);
+            _repositoryMock.Verify(r => r.UpdateUserAsync(It.IsAny<UserEntity>()), Times.Once);
+        }
     }
 }

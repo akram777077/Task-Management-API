@@ -33,8 +33,10 @@ public class UserService : IUserService
         return await _repository.DeleteUserAsync(username);
     }
 
-    public Task<bool> UpdateAsync(UserModel user)
+    public async Task<bool> UpdateAsync(UserModel user)
     {
-        throw new NotImplementedException();
+        var entity = user.ToEntity();
+        var result =  await _repository.UpdateUserAsync(entity);
+        return result;
     }
 }

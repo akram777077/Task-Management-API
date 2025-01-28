@@ -21,9 +21,11 @@ public class UserService : IUserService
         return result?.ToModel();
     }
 
-    public Task<AuthorizeUserModel> CreateAsync(UserModel user)
+    public async Task<AuthorizeUserModel> CreateAsync(UserModel user)
     {
-        throw new NotImplementedException();
+        var entity = user.ToEntity();
+        var result = await _repository.CreateUserAsync(entity);
+        return result.ToModel();
     }
 
     public async Task<bool> DeleteAsync(string username)

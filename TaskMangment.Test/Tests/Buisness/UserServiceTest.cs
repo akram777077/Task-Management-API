@@ -82,5 +82,21 @@ namespace TaskMangment.Test.Tests.Buisness
             Assert.False(result);
             _repositoryMock.Verify(r => r.DeleteUserAsync(username), Times.Once);
         }
+        [Fact]
+        public async Task CreateAsync_ValidUser_ReturnsAuthorizeUserModel()
+        {
+            // Arrange
+            var user = new UserModel("validUsername", "validPassword", "admin");
+            var entity = user.ToEntity();
+            var result = new AuthorizeUserEntity { Username = "validUsername", Role = "admin" };
+            _repositoryMock.Setup(r => r.CreateUserAsync(It.IsAny<UserEntity>())).ReturnsAsync(result);
+
+            // Act
+            var authorizeUserModel = await _userService.CreateAsync(user);
+
+            // Assert
+            Assert.Equal("validUsername", authorizeUserModel.Username);
+            Assert.Equal("admin", authorizeUserModel.Role);
+        }
     }
 }

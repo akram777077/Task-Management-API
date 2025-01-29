@@ -2,9 +2,9 @@ using System;
 
 namespace TaskMangment.Api.Routes;
 
-public static class TaskRoute
+public static class TaskMangmentRoute
 {
-    public const string Base = "/api/tasks";
+    public const string Base = "/api/task-magment";
     public const string GetAll = Base;
     public const string Get = Base + "/{id:int}";
     public const string Create = Base;

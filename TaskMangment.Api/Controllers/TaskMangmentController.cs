@@ -12,7 +12,7 @@ using TaskMangment.Buisness.Services.STask;
 namespace TaskMangment.Api.Controllers
 {
     [Authorize(Roles = KeysRoles.Admin)]
-    [Route(TaskRoute.Base)]
+    [Route(TaskMangmentRoute.Base)]
     [ApiController]
     public class TaskMangmentController : ControllerBase
     {
@@ -25,7 +25,7 @@ namespace TaskMangment.Api.Controllers
             this._mapper = mapper;
         }
         [HttpGet]
-        [Route(TaskRoute.GetAll)]
+        [Route(TaskMangmentRoute.GetAll)]
         [SkipValidateId]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status200OK,Type = typeof(IEnumerable<ResponseDto>))]
@@ -38,7 +38,7 @@ namespace TaskMangment.Api.Controllers
             return Ok(responseList);
         }
         [HttpGet]
-        [Route(TaskRoute.Get)]
+        [Route(TaskMangmentRoute.Get)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK,Type = typeof(ResponseDto))]
         [ProducesResponseType(StatusCodes.Status400BadRequest,Type = typeof(ErrorResponseDto))]
@@ -51,7 +51,7 @@ namespace TaskMangment.Api.Controllers
             return Ok(response);
         }
         [HttpPost]
-        [Route(TaskRoute.Create)]
+        [Route(TaskMangmentRoute.Create)]
         [SkipValidateId]
         [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<ActionResult<ResponseDto>> Create(CreateTaskRequest newTaskDto)
@@ -62,7 +62,7 @@ namespace TaskMangment.Api.Controllers
             return CreatedAtAction(nameof(GetById), new { id = task.Id }, response);
         }
         [HttpPut]
-        [Route(TaskRoute.Update)]
+        [Route(TaskMangmentRoute.Update)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest,Type = typeof(ErrorResponseDto))]
@@ -76,7 +76,7 @@ namespace TaskMangment.Api.Controllers
             return NoContent();
         }
         [HttpDelete]
-        [Route(TaskRoute.Delete)]
+        [Route(TaskMangmentRoute.Delete)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest,Type = typeof(ErrorResponseDto))]
@@ -88,7 +88,7 @@ namespace TaskMangment.Api.Controllers
             return NoContent();
         }
         [HttpPatch]
-        [Route(TaskRoute.Complete)]
+        [Route(TaskMangmentRoute.Complete)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest,Type = typeof(ErrorResponseDto))]
@@ -100,7 +100,7 @@ namespace TaskMangment.Api.Controllers
             return NoContent();
         }
         [HttpPatch]
-        [Route(TaskRoute.Reopen)]
+        [Route(TaskMangmentRoute.Reopen)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest,Type = typeof(ErrorResponseDto))]

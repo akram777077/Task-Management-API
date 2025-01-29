@@ -9,6 +9,7 @@ public static class TaskMapperExtensions
     public static TaskModel ToModel(this TaskEntity entity)
     {
         return new TaskModel(
+            entity.Username,
             entity.Id,
             entity.Title,
             entity.Description,
@@ -22,6 +23,7 @@ public static class TaskMapperExtensions
 
         return new TaskEntity
         {
+            Username = model.Username,
             Id = model.Id is null ? 0 : (int)model.Id,
             Title = model.Title,
             Description = model.Description,

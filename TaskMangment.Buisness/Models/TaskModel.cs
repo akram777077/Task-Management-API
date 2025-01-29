@@ -4,8 +4,10 @@ namespace TaskMangment.Buisness.Models;
 
 public readonly struct TaskModel
 {
-    public TaskModel(int? id, string title, string? description, DateTime dueDate, bool isCompleted = false)
+    public TaskModel(string username,int? id, string title, string? description,
+     DateTime dueDate, bool isCompleted = false)
     {
+        Username = username;
         Id = id;
         Title = title;
         Description = description;
@@ -18,4 +20,5 @@ public readonly struct TaskModel
     public readonly string? Description;
     public readonly DateTime DueDate;
     public readonly bool IsCompleted;
+    public readonly string Username;
 }

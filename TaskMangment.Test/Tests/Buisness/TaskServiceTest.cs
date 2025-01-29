@@ -56,7 +56,7 @@ using Xunit;
         public async Task CreateAsync_ValidTask_ReturnsCreatedTask()
         {
             // Arrange
-            var newTaskModel = new TaskModel(0, "Test Task", "Description", DateTime.UtcNow);
+            var newTaskModel = new TaskModel("akram",0, "Test Task", "Description", DateTime.UtcNow);
             var taskEntity = newTaskModel.ToEntity();
             var createdEntity = new TaskEntity { Id = 1, Title = "Test Task", Description = "Description", DueDate = DateTime.UtcNow, IsCompleted = false };
 
@@ -80,7 +80,7 @@ using Xunit;
         public async Task CreateAsync_InvalidTask_ThrowsArgumentException()
         {
             // Arrange
-            var invalidTaskModel = new TaskModel(1, "Invalid Task", null, DateTime.UtcNow);
+            var invalidTaskModel = new TaskModel("akram",1, "Invalid Task", null, DateTime.UtcNow);
 
             // Act & Assert
             await Assert.ThrowsAsync<ArgumentException>(() => _taskService.CreateAsync(invalidTaskModel));
@@ -186,7 +186,7 @@ using Xunit;
         public async Task UpdateAsync_ValidTask_ReturnsTrue()
         {
             // Arrange
-            var updatedTaskModel = new TaskModel(1, "Updated Task", "Updated Description", DateTime.UtcNow);
+            var updatedTaskModel = new TaskModel("akram",1, "Updated Task", "Updated Description", DateTime.UtcNow);
             var updatedTaskEntity = updatedTaskModel.ToEntity();
 
                 _repositoryMock.Setup(repo => repo.UpdateTaskAsync(It.Is<TaskEntity>(
@@ -210,7 +210,7 @@ using Xunit;
         public async Task UpdateAsync_InvalidTask_ThrowsArgumentException()
         {
             // Arrange
-            var invalidTaskModel = new TaskModel(0, "Invalid Task", null, DateTime.UtcNow);
+            var invalidTaskModel = new TaskModel("akram",0, "Invalid Task", null, DateTime.UtcNow);
 
             // Act & Assert
             await Assert.ThrowsAsync<ArgumentException>(() => _taskService.UpdateAsync(invalidTaskModel));
@@ -219,7 +219,7 @@ using Xunit;
         public void ToEntity_ValidTaskModel_ReturnsTaskEntity()
         {
             var date = DateTime.UtcNow;
-            var taskModel = new TaskModel(1, "Test Task", "Description", date);
+            var taskModel = new TaskModel("akram",1, "Test Task", "Description", date);
             var taskEntity = taskModel.ToEntity();
 
             Assert.Equal(1, taskEntity.Id);
@@ -232,7 +232,7 @@ using Xunit;
         public void ToEntity_NullIdTaskModel_ReturnsTaskEntity()
         {
             var date = DateTime.UtcNow;
-            var taskModel = new TaskModel(null, "Test Task", "Description", date);
+            var taskModel = new TaskModel("akram",null, "Test Task", "Description", date);
             var taskEntity = taskModel.ToEntity();
 
             Assert.Equal(0, taskEntity.Id);
@@ -436,7 +436,7 @@ using Xunit;
         public async Task UpdateFromUserAsync_ValidTaskModel_ReturnsTrue()
         {
             // Arrange
-            var taskModel = new TaskModel(1, "Test Task", "Description", DateTime.UtcNow);
+            var taskModel = new TaskModel("akram",1, "Test Task", "Description", DateTime.UtcNow);
             var repositoryMock = new Mock<ITaskRepository>();
             repositoryMock.Setup(repo => repo.UpdateTaskFromUserAsync(It.IsAny<TaskEntity>())).ReturnsAsync(true);
             var taskService = new TaskService(repositoryMock.Object);
@@ -453,7 +453,7 @@ using Xunit;
         public async Task UpdateFromUserAsync_InvalidTaskModel_ThrowsArgumentException()
         {
             // Arrange
-            var taskModel = new TaskModel(0, "Test Task", "Description", DateTime.UtcNow);
+            var taskModel = new TaskModel("akram",0, "Test Task", "Description", DateTime.UtcNow);
             var taskService = new TaskService(new Mock<ITaskRepository>().Object);
 
             // Act & Assert
@@ -463,7 +463,7 @@ using Xunit;
         public async Task AssignToUserAsync_ValidTask_ReturnsTaskModel()
         {
             // Arrange
-            var taskModel = new TaskModel(1, "Test Task", "Description", DateTime.UtcNow);
+            var taskModel = new TaskModel("akram",1, "Test Task", "Description", DateTime.UtcNow);
             var repositoryMock = new Mock<ITaskRepository>();
             repositoryMock.Setup(repo => repo.AssignTaskToUserAsync(It.IsAny<TaskEntity>())).ReturnsAsync(new TaskEntity());
             var taskService = new TaskService(repositoryMock.Object);
@@ -479,7 +479,7 @@ using Xunit;
         public async Task AssignToUserAsync_RepositoryThrowsException_ThrowsException()
         {
             // Arrange
-            var taskModel = new TaskModel(1, "Test Task", "Description", DateTime.UtcNow);
+            var taskModel = new TaskModel("akram",1, "Test Task", "Description", DateTime.UtcNow);
             var repositoryMock = new Mock<ITaskRepository>();
             repositoryMock.Setup(repo => repo.AssignTaskToUserAsync(It.IsAny<TaskEntity>())).Throws<Exception>();
             var taskService = new TaskService(repositoryMock.Object);

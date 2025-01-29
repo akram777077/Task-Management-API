@@ -10,9 +10,10 @@ public class TaskProfile : Profile
     public TaskProfile()
     {
         CreateMap<TaskModel,ResponseDto>();
-        CreateMap<CreateTaskRequest,TaskModel>()
+        CreateMap<CreateTaskWithUserDto,TaskModel>()
             .ConstructUsing(x => 
                 new TaskModel(
+                    x.Username,
                     0, 
                     x.Title, 
                     x.Description, 
@@ -20,9 +21,10 @@ public class TaskProfile : Profile
                     false
                 )
             );
-        CreateMap<UpdateTaskRequest,TaskModel>()
+        CreateMap<UpdateTaskWithUser,TaskModel>()
             .ConstructUsing((x, context) => 
                 new TaskModel(
+                    x.Username,
                     context.Items["Id"] as int? ?? 0,
                     x.Title, 
                     x.Description, 
@@ -30,5 +32,12 @@ public class TaskProfile : Profile
                     x.IsCompleted
                 )
             );
+        CreateMap<CreateTaskRequest,CreateTaskWithUserDto>()
+        .ConstructUsing((x,context) => new CreateTaskWithUserDto(
+            context.Items["username"] as string ?? string.Empty,
+            x.Title,
+            x.Description,
+            x.DueDate
+        ));
     }
 }

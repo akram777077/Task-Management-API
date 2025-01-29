@@ -66,7 +66,9 @@ public class TaskRepository : ITaskRepository
 
     public async Task<List<TaskEntity>> GetTasksByUserAsync(string username)
     {
-        var actUser = await _context.Users.FirstOrDefaultAsync(x => x.UserName == username);
+        var actUser = await _context.Users.AsNoTracking()
+        .Include(x => x.Tasks)
+        .FirstOrDefaultAsync(x => x.UserName == username);
         if (actUser is null)
             throw new Exception("the user is not on the system");
         var list = actUser.Tasks;

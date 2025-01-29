@@ -1,14 +1,17 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TaskMangment.Api.DTOs;
 using TaskMangment.Api.Middlewares.Attributes;
+using TaskMangment.Api.Roles;
 using TaskMangment.Api.Routes;
 using TaskMangment.Buisness.Models;
 using TaskMangment.Buisness.Services.STask;
 
 namespace TaskMangment.Api.Controllers
 {
+    [Authorize(Roles = KeysRoles.Admin)]
     [Route(TaskRoute.Base)]
     [ApiController]
     public class TaskController : ControllerBase

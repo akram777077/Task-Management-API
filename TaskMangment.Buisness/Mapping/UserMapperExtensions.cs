@@ -1,7 +1,7 @@
+using TaskMangment.Buisness.Helper;
 using TaskMangment.Buisness.Models;
 using TaskMangment.Buisness.Models.Users;
 using TaskMangment.Data.Entities;
-
 namespace TaskMangment.Buisness.Mapping;
 
 public static class UserMapperExtensions
@@ -27,7 +27,7 @@ public static class UserMapperExtensions
     {
         return new LoginEntity
         {
-            Password = model.Password,
+            Password = model.Password.ComputeSHA256(),
             Username = model.Username,
         };
     }

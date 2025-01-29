@@ -6,15 +6,6 @@ namespace TaskMangment.Buisness.Mapping;
 
 public static class UserMapperExtensions
 {
-    public static UserModel ToModel(this UserEntity entity)
-    {
-        return new UserModel
-        (
-            entity.UserName, 
-            entity.Password, 
-            entity.RoleName
-        );
-    }
     public static UserEntity ToEntity(this UserModel model)
     {
         return new UserEntity
@@ -30,22 +21,6 @@ public static class UserMapperExtensions
         (
             entity.Username, 
             entity.Role
-        );
-    }
-    public static AuthorizeUserEntity ToEntity(this AuthorizeUserModel model)
-    {
-        return new AuthorizeUserEntity
-        {
-            Username = model.Username,
-            Role = model.Role
-        };
-    }
-        public static LoginModel ToModel(this LoginEntity entity)
-    {
-        return new LoginModel
-        (
-            entity.Username,
-            entity.Password
         );
     }
     public static LoginEntity ToEntity(this LoginModel model)

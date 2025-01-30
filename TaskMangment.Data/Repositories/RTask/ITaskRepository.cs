@@ -12,6 +12,7 @@ public interface ITaskRepository
     Task<bool> CompleteTaskAsync(int id);
     Task<bool> ReopenTaskAsync(int id);
     Task<List<TaskEntity>> GetTasksByUserAsync(string username);
+    Task<TaskEntity?> GetTaskByUserAsync(int taskId,string username);
     Task<TaskEntity> AssignTaskToUserAsync(TaskEntity task);
     Task<bool> UpdateTaskFromUserAsync(TaskEntity newTask);
     Task<bool> RemoveTaskFromUserAsync(int taskId,string username);

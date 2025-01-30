@@ -143,4 +143,13 @@ public class TaskRepository : ITaskRepository
         await _context.SaveChangesAsync();
         return true;
     }
+
+    public async Task<TaskEntity?> GetTaskByUserAsync(int taskId, string username)
+    {
+        var result = await _context.ToDoItems
+        .FirstOrDefaultAsync(x => x.Id == taskId);
+        if (result is null || !result.Username.Equals(username))
+            return null;
+        return result;
+    }
 }

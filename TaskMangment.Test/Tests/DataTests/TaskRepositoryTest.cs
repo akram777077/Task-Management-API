@@ -434,4 +434,40 @@ public class TaskRepositoryTest
         Assert.Equal("Task 1",editTask!.Title);
         db.Dispose();
     }
+    //? GetTaskByUserAsync Tests
+    [Fact]
+    public async Task GetTaskByUserAsync_CorrectTaskAndUser_ReturnsTask()
+    {
+        var db = InMemoryDbContext.CreateInMemoryDbContext();
+        await db.AddTestDataAsync();
+        var service = new TaskRepository(db);
+        var result = await service.GetTaskByUserAsync(1, "akram");
+        Assert.NotNull(result);
+        Assert.Equal(1, result.Id);
+        Assert.Equal("akram", result.Username);
+        db.Dispose();
+    }
+
+    [Fact]
+    public async Task GetTaskByUserAsync_WrongTask_ReturnsNull()
+    {
+        var db = InMemoryDbContext.CreateInMemoryDbContext();
+        await db.AddTestDataAsync();
+        var service = new TaskRepository(db);
+            var result = await service.GetTaskByUserAsync(-1, "akram");
+            Assert.Null(result);
+            db.Dispose();
+        }
+
+    [Fact]
+    public async Task GetTaskByUserAsync_WrongUser_ReturnsNull()
+    {
+        var db = InMemoryDbContext.CreateInMemoryDbContext();
+        await db.AddTestDataAsync();
+        var service = new TaskRepository(db);
+        var result = await service.GetTaskByUserAsync(1, "john");
+        Assert.Null(result);
+        db.Dispose();
+    }
+
 }

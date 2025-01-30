@@ -25,7 +25,7 @@ public class TaskProfile : Profile
             .ConstructUsing((x, context) => 
                 new TaskModel(
                     x.Username,
-                    context.Items["Id"] as int? ?? 0,
+                    context.Items["id"] as int? ?? 0,
                     x.Title, 
                     x.Description, 
                     x.DueDate,
@@ -38,6 +38,14 @@ public class TaskProfile : Profile
             x.Title,
             x.Description,
             x.DueDate
+        ));
+        CreateMap<UpdateTaskRequest,UpdateTaskWithUser>()
+        .ConstructUsing((x,context) => new UpdateTaskWithUser(
+            context.Items["username"] as string ?? string.Empty,
+            x.Title,
+            x.Description,
+            x.DueDate,
+            x.IsCompleted
         ));
     }
 }

@@ -49,5 +49,21 @@ namespace TaskMangment.Api.Controllers
             var response = _mapper.Map<ResponseDto>(task);
             return Created();
         }
+        [HttpPut]
+        [Route(TaskRoute.Update)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest,Type = typeof(ErrorResponseDto))]
+        public async Task<ActionResult<ResponseDto>> Update(int id, UpdateTaskRequest updatedTaskDto)
+        {
+            var username = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+            var taskWithUser = _mapper.Map<UpdateTaskWithUser>(updatedTaskDto, ops => ops.Items["username"] = username);
+            var taskModel = _mapper.Map<TaskModel>(taskWithUser, ops => ops.Items["id"] = id);
+            var result = await _taskService.UpdateFromUserAsync(taskModel);
+            if (!result)
+                return NotFound();
+            var response = _mapper.Map<ResponseDto>(taskModel);
+            return NoContent();
+        }
     }
 }

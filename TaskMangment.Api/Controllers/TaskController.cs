@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using TaskMangment.Api.DTOs;
 using TaskMangment.Api.Roles;
 using TaskMangment.Api.Routes;
+using TaskMangment.Buisness.Models;
 using TaskMangment.Buisness.Services.STask;
 
 namespace TaskMangment.Api.Controllers
@@ -35,6 +36,18 @@ namespace TaskMangment.Api.Controllers
                 return NoContent();
             var responseList = _mapper.Map<List<ResponseDto>>(tasksList);
             return Ok(responseList);
+        }
+        [HttpPost]
+        [Route(TaskRoute.Create)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        public async Task<ActionResult<ResponseDto>> Create(CreateTaskRequest newTaskDto)
+        {
+            var username = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+            var taskWithUser = _mapper.Map<CreateTaskWithUserDto>(newTaskDto, ops => ops.Items["username"] = username);
+            var taskModel = _mapper.Map<TaskModel>(taskWithUser);
+            var task = await _taskService.AssignToUserAsync(taskModel);
+            var response = _mapper.Map<ResponseDto>(task);
+            return Created();
         }
     }
 }

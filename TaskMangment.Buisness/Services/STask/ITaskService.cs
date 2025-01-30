@@ -13,6 +13,7 @@ public interface ITaskService
     Task<bool> CompleteAsync(int id);
     Task<bool> ReopenAsync(int id);
     Task<List<TaskModel>> GetByUserAsync(string username);
+    Task<TaskModel?> GetByUserAsync(int taskId,string username);
     Task<TaskModel> AssignToUserAsync(TaskModel task);
     Task<bool> UpdateFromUserAsync(TaskModel newTask);
     Task<bool> RemoveFromUserAsync(int taskId,string username);

@@ -487,5 +487,57 @@ using Xunit;
             // Act and Assert
             await Assert.ThrowsAsync<Exception>(() => taskService.AssignToUserAsync(taskModel));
         }
-    }
 
+
+        [Fact]
+        public async Task GetByUserAsync_ValidTaskIdAndUsername_ReturnsTaskModel()
+        {
+            // Arrange
+            int taskId = 1;
+            string username = "testuser";
+            var taskEntity = new TaskEntity { Id = taskId, Title = "Task 1", Username = username, Description = "Description 1", DueDate = DateTime.UtcNow, IsCompleted = false };
+
+            _repositoryMock.Setup(repo => repo.GetTaskByUserAsync(taskId, username)).ReturnsAsync(taskEntity);
+
+            // Act
+            var result = await _taskService.GetByUserAsync(taskId, username);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(taskEntity.Id, result.Value.Id);
+            Assert.Equal(taskEntity.Title, result.Value.Title);
+            Assert.Equal(taskEntity.Description, result.Value.Description);
+            Assert.Equal(taskEntity.DueDate, result.Value.DueDate);
+            Assert.Equal(taskEntity.IsCompleted, result.Value.IsCompleted);
+            _repositoryMock.Verify(repo => repo.GetTaskByUserAsync(taskId, username), Times.Once);
+        }
+
+        [Fact]
+        public async Task GetByUserAsync_InvalidTaskId_ThrowsArgumentException()
+        {
+            // Arrange
+            int invalidTaskId = 0;
+            string username = "testuser";
+
+            // Act & Assert
+            var exception = await Assert.ThrowsAsync<ArgumentException>(() => _taskService.GetByUserAsync(invalidTaskId, username));
+            Assert.Equal("Id must be greater than 0", exception.Message);
+        }
+
+        [Fact]
+        public async Task GetByUserAsync_ValidTaskIdAndInvalidUsername_ReturnsNull()
+        {
+            // Arrange
+            int taskId = 1;
+            string username = "invaliduser";
+
+            _repositoryMock.Setup(repo => repo.GetTaskByUserAsync(taskId, username)).ReturnsAsync((TaskEntity?)null);
+
+            // Act
+            var result = await _taskService.GetByUserAsync(taskId, username);
+
+            // Assert
+            Assert.Null(result);
+            _repositoryMock.Verify(repo => repo.GetTaskByUserAsync(taskId, username), Times.Once);
+        }
+    }

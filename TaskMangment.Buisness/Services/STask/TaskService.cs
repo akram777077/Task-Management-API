@@ -112,4 +112,12 @@ public class TaskService : ITaskService
         var result =  await _repository.UpdateTaskAsync(entity);
         return result;
     }
+
+    public async Task<TaskModel?> GetByUserAsync(int taskId, string username)
+    {
+        if(taskId < 1)
+            throw new ArgumentException("Id must be greater than 0");
+        var taskEntity = await _repository.GetTaskByUserAsync(taskId, username);
+        return taskEntity?.ToModel();
+    }
 }

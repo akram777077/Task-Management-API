@@ -8,4 +8,5 @@ public static class TaskRoute
     public const string GetAll = Base + "/all";
     public const string Create = Base + "/create";
     public const string Update = Base + "/update";
+    public const string Delete = Base + "/delete";
 }

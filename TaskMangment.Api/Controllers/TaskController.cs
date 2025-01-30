@@ -65,5 +65,18 @@ namespace TaskMangment.Api.Controllers
             var response = _mapper.Map<ResponseDto>(taskModel);
             return NoContent();
         }
+        [HttpDelete]
+        [Route(TaskRoute.Delete)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest,Type = typeof(ErrorResponseDto))]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var username = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+            var result = await _taskService.RemoveFromUserAsync(id,username);
+            if (!result)
+                return NotFound();
+            return NoContent();
+        }
     }
 }

@@ -104,5 +104,19 @@ namespace TaskMangment.Api.Controllers
                 return NotFound();
             return NoContent();
         }
+        [HttpGet]   
+        [Route(TaskRoute.GetByUser)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status200OK,Type = typeof(ResponseDto))]
+        public async Task<ActionResult<ResponseDto>> GetTaskByUser(int taskId)
+        {
+            var username = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+            var task = await _taskService.GetByUserAsync(taskId,username);
+            if(task is null)
+                return NotFound();
+            var response = _mapper.Map<ResponseDto>(task);
+            return Ok(response);
+        }
+
     }
 }

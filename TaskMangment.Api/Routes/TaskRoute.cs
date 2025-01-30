@@ -10,4 +10,5 @@ public static class TaskRoute
     public const string Update = Base + "/update";
     public const string Delete = Base + "/delete";
     public const string Reopen = Base + "/reopen";
+    public const string Complete = Base + "/complete";
 }

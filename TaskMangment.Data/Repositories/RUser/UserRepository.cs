@@ -21,11 +21,14 @@ public class UserRepository : IUserRepository
         return result?.ToAuthorizeUser();
     }
 
-    public async Task<AuthorizeUserEntity> CreateUserAsync(UserEntity user)
+    public async Task<bool> CreateUserAsync(UserEntity user)
     {
+        var result = await _context.Users.FirstOrDefaultAsync(x => x.UserName == user.UserName);
+        if (result is not null)
+            return false;
         _context.Users.Add(user);
         await _context.SaveChangesAsync();
-        return user.ToAuthorizeUser();
+        return true;
     }
 
     public async Task<bool> UpdateUserAsync(UserEntity user)

@@ -48,6 +48,19 @@ public class AuthController : ControllerBase
         return Ok(new { token });
 
     }
+    [HttpPost]
+    [Route(AuthRoute.Register)]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    public async Task<ActionResult> Register([FromBody] NewUserWithoutRoleDto user)
+    {
+        var model = _mapper.Map<UserModel>(user, ops => ops.Items["role"] = "user");
+        var result = await _service.CreateAsync(model);
+        if (!result)
+            return Conflict("the username is already taken");
+        return Created();
+    }
 
     private string GenerateJwtToken(AuthorizeUserModel user)
     {

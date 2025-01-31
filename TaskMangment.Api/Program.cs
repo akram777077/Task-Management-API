@@ -11,6 +11,8 @@ using TaskMangment.Data;
 using TaskMangment.Data.Repositories.RTask;
 using TaskMangment.Data.Repositories.RUser;
 using DotNetEnv;
+using Scalar.AspNetCore;
+using TaskMangment.Api.SecuritySheme;
 
 Env.Load();
 var builder = WebApplication.CreateBuilder(args);
@@ -43,7 +45,9 @@ builder.Services.AddAuthentication(options =>
     });
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+builder.Services.AddOpenApi("v1",options => {
+    options.AddDocumentTransformer<BearerSecuritySchemeTransformer>();
+});
 
 builder.Services.AddDbContext<ToDoListDbContext>(options =>
 {
@@ -62,10 +66,16 @@ app.UseMiddleware<ValidateIdMiddleware>();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
-    app.UseSwaggerUI(x => x.SwaggerEndpoint("/openapi/v1.json","TaskMangment.Api"));
+    app.MapScalarApiReference(options => {
+        options.Title = "TaskMangment.Api";
+        options.DefaultHttpClient=new (ScalarTarget.CSharp,ScalarClient.HttpClient);
+        options.CustomCss="";
+    });
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

@@ -21,11 +21,10 @@ public class UserService : IUserService
         return result?.ToModel();
     }
 
-    public async Task<AuthorizeUserModel> CreateAsync(UserModel user)
+    public async Task<bool> CreateAsync(UserModel user)
     {
         var entity = user.ToEntity();
-        var result = await _repository.CreateUserAsync(entity);
-        return result.ToModel();
+        return await _repository.CreateUserAsync(entity);
     }
 
     public async Task<bool> DeleteAsync(string username)

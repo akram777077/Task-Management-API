@@ -22,9 +22,29 @@ public class UserRepositoryTest
             Role = new RoleEntity() { Name = "admin" }
         };
 
-        await repo.CreateUserAsync(user);
+        var resultBool = await repo.CreateUserAsync(user);
+        Assert.True(resultBool);
         var result = await db.Users.FirstOrDefaultAsync(x => x.UserName == user.UserName);
         Assert.NotNull(result);
+    }
+    [Fact]
+    public async Task CreateUserAsync_UserExist_ShouldNotCreateUser()
+    {
+        var db = InMemoryDbContext.CreateInMemoryDbContext();
+        await db.AddTestDataAsync();
+        var repo = new UserRepository(db);
+        var user = new UserEntity()
+        {
+            UserName = "akram",
+            Password = "test",
+            RoleName = "admin",
+            Role = new RoleEntity() { Name = "admin" }
+        };
+
+        var resultBool = await repo.CreateUserAsync(user);
+        Assert.False(resultBool);
+        var result = await db.Users.CountAsync(x => x.UserName == user.UserName);
+        Assert.Equal(1, result);
     }
     [Fact]
     public async Task DeleteUserAsync_validUser_ShouldDeleteUser()

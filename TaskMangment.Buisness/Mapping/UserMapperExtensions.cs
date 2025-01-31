@@ -10,7 +10,7 @@ public static class UserMapperExtensions
     {
         return new UserEntity
         {
-            Password = model.Password,
+            Password = model.Password.ComputeSHA256(),
             UserName = model.Username,
             RoleName = model.Role
         };
